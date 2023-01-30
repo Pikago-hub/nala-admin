@@ -31,7 +31,7 @@ export default function Login(){
 
     //Handle Login API Integration here
     const authenticateUser = () =>{
-        router.push("/admin/dashboard")
+        router.push("/dashboard")
     }
 
     return(
