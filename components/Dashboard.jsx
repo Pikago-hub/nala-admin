@@ -28,8 +28,8 @@ import AddMeteorite from './AddMeteorite';
 import AddEducatorTool from './AddEducatorTool';
 //import  TableComponent  from '../components'
 //import { GeoPoint } from "firebase/firestore";
-//import { firestore} from "../../firebase/initFirebase";
-/*import {
+import { firestore, auth} from "../utils/firebase";
+import {
     addDoc,
     collection,
     getFirestore,
@@ -40,7 +40,7 @@ import AddEducatorTool from './AddEducatorTool';
     signInWithEmailAndPassword,
     signOut,
   } from 'firebase/auth'
-*/
+  import { useAuthState } from 'react-firebase-hooks/auth';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -75,10 +75,10 @@ const Item = styled(Paper)(({ theme }) => ({
     }
     const handleClose = () => setOpen(false);
     const handleCloseEdu = () => setOpenEdu(false);
-    //const[user, loading] = useAuthState(auth)
+    const[user, loading] = useAuthState(auth)
     const logout = async () => {
         //setUser(null)
-        //await signOut(auth)
+        await signOut(auth)
         router.push('/')
       }
       const handleChange = (event) => {
@@ -133,16 +133,17 @@ const [isTool, setIsTool] = useState(false);
     console.log(`The new meteorite was created at ${newMeteorite.path}`);
     */
   };
-/*
+
     if(loading){
         return <div>Loading...</div>
     }
+    
     console.log(user)
     if(!user){
         router.push('/')
         return <div>Please sign in to continue </div>
     }
-    */
+    
     return (
         <div className="bg-white" style={{
             width: '100%',
@@ -201,7 +202,7 @@ const [isTool, setIsTool] = useState(false);
         
         {isPicked === 'meteorite' && <MeteoriteTable />}
         { isPicked === 'tool' && <EducatorToolTable /> }
-        <button onClick={logout}>Sign Out</button>
+        <Button variant="outlined" onClick={logout}>Sign Out</Button>
       </div>
     
     );
