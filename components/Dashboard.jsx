@@ -25,6 +25,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Modal from '@mui/material/Modal';
 import AddMeteorite from './AddMeteorite';
+import AddEducatorTool from './AddEducatorTool';
 //import  TableComponent  from '../components'
 //import { GeoPoint } from "firebase/firestore";
 //import { firestore} from "../../firebase/initFirebase";
@@ -48,14 +49,32 @@ const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   }));
-  
-  
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
 
  const AdminDashBoard = () => {
     const router = useRouter()
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
+    const [openEdu, setOpenEdu] = React.useState(false);
+    const handleOpen = () => {
+      if(isPicked === 'meteorite'){
+        //console.log('here')
+        setOpen(true);}
+        if(isPicked === 'tool'){
+          //console.log('here')
+          setOpenEdu(true);}
+    }
     const handleClose = () => setOpen(false);
+    const handleCloseEdu = () => setOpenEdu(false);
     //const[user, loading] = useAuthState(auth)
     const logout = async () => {
         //setUser(null)
@@ -132,6 +151,9 @@ const [isTool, setIsTool] = useState(false);
             textAlign :'center',
            
           }}>
+            <div>
+              mnfslkdfkjsdfjkjsfdkjsdfkjlsdfjksf
+            </div>
             <Grid container spacing={2}>
   <Grid item xs={6} md={8}>
   <FormControl fullWidth>
@@ -155,13 +177,23 @@ const [isTool, setIsTool] = useState(false);
   
 </Grid>
 <Modal
-        open={open}
+        open={ open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
+        <Box sx={style}><AddMeteorite /></Box>
+         
         
-         <AddMeteorite />
+      </Modal>
+      <Modal
+        open={openEdu}
+        onClose={handleCloseEdu}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}><AddEducatorTool /></Box>
+         
         
       </Modal>
         
@@ -247,6 +279,13 @@ const [isTool, setIsTool] = useState(false);
     };
   
     return (
+      <div>
+      <div>
+        kjdlvfksdjfsdnf
+        djfkdsfjkljdsfjkl 
+        dnjf
+      </div>
+      <Card>
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
@@ -299,6 +338,8 @@ const [isTool, setIsTool] = useState(false);
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      </Card>
+      </div>
     );
   }
 

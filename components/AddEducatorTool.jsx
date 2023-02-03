@@ -4,7 +4,7 @@
 
 import { Button, TextField, Card, CardContent, CardActions, CardHeader,  } from '@mui/material'
 import { useState } from 'react';
-const AddMeteorite = () => {
+const AddEducatorTool = () => {
     const [description, setDescription] = useState("");
   const [visible, setVisible] = useState("");
   const [latitude, setLatitude] = useState("");
@@ -20,7 +20,7 @@ const AddMeteorite = () => {
              
            }}>
                <Card >
-             <CardHeader  title="Add a new Meteorite: " />
+             <CardHeader  title="Add a new Educator Tool: " />
              <CardContent>
                <div>
                  <TextField
@@ -124,11 +124,11 @@ const AddMeteorite = () => {
                  <button >Add Meteorite</button>
                  */
        }
-           <button >Add Meteorite</button>
+           <button >Add Tool</button>
                </form>
     )
     
     
 }
 
-export default AddMeteorite;
+export default AddEducatorTool;

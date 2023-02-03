@@ -7,7 +7,13 @@ import { loginFields } from "../constants";
 //import FormAction from "./FormAction";
 //import FormExtra from "./FormExtra";
 //import Input from "./Input";
-
+import {auth} from '../utils/firebase'
+import {
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth'
 
 
 import styles from '../styles'
@@ -23,15 +29,27 @@ export default function Login(){
     const handleChange=(e)=>{
         setLoginState({...loginState,[e.target.id]:e.target.value})
     }
-
+    const [data, setData] = useState({
+        email: '',
+        password: '',
+      })
+      const login = (email, password) => {
+        return signInWithEmailAndPassword(auth, email, password)
+      }
     const handleSubmit=(e)=>{
         e.preventDefault();
+        console.log('sd', loginState['email-address'])
         authenticateUser();
     }
 
     //Handle Login API Integration here
-    const authenticateUser = () =>{
-        router.push("/dashboard")
+    const authenticateUser = async () =>{
+        try {
+            await login(loginState['email-address'], loginState.password)
+            router.push('/dashboard')
+          } catch (err) {
+            console.log(err)
+          }
     }
 
     return(
@@ -65,7 +83,7 @@ export default function Login(){
         </div>
 
         
-            {<FormExtra/>
+            {//<FormExtra/>
 }
            <FormAction handleSubmit={handleSubmit} text="Login"/>
     
