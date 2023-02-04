@@ -30,10 +30,8 @@ import AddEducatorTool from './AddEducatorTool';
 //import { GeoPoint } from "firebase/firestore";
 import { firestore, auth} from "../utils/firebase";
 import {
-    addDoc,
-    collection,
-    getFirestore,
-  } from "firebase/firestore";
+  collection, deleteDoc, doc, DocumentData, getDocs, limit, query, QueryDocumentSnapshot, updateDoc, where, getDoc}
+   from "firebase/firestore";
   import {
     onAuthStateChanged,
     createUserWithEmailAndPassword,
@@ -103,35 +101,29 @@ const [isTool, setIsTool] = useState(false);
 }
   const [name, setName] = useState("");
   
-  const [picture, setPicture] = useState("https://www.nhm.ac.uk/content/dam/nhmwww/discover/three-types-of-meteorites/iron-meteorite-dark-fusion-crust-two-column.jpg.thumb.768.768.jpg");
-  //convert lat and long to number
-  //and then set coordinates to (lat, long)
-  const addNewMeteorite = (e) => {
-    /*
-    e.preventDefault();
-    setCoordinates(new GeoPoint(parseInt(latitude), parseInt(longitude)))
-    console.log(coordinates)
-    addMeteorite({
-        coordinates,
-        
-        name,
-        description,
-        visible,
-        picture
-    });
-    //console.log("successfully added a new Meteorite");
-    alert("successfully added a new Meteorite")
-    */
-  };
+ 
+  
   //const meteoriteCollection = collection(firestore, "Meteorites");
   
-  // ADD A NEW DOCUMENT TO YOUR COLLECTION
-   const addMeteorite = async (meteoriteData) => {
-    
-    /*
-    const newMeteorite = await addDoc(meteoriteCollection, { ...meteoriteData });
-    console.log(`The new meteorite was created at ${newMeteorite.path}`);
-    */
+  
+  const [meteorites, setMeteorites] = useState([])
+  const getMeteorites = async () => {
+    //const meteoritesQuery = query(meteoritesCollection,where('show','==',true),limit(10));
+    //const querySnapshot = await getDocs(meteoritesQuery);
+    //const result: QueryDocumentSnapshot<DocumentData>[] = [];
+    //querySnapshot.forEach((snapshot) => {
+    //  result.push(snapshot);
+    //})
+    //setEduTools(result);
+    const db = firestore
+    const q = query(collection(db, "Meteorites"));
+
+const querySnapshot = await getDocs(q);
+querySnapshot.forEach((doc) => {
+  // doc.data() is never undefined for query doc snapshots
+  console.log(doc.id, " => ", doc.data());
+});
+
   };
 
     if(loading){
@@ -203,6 +195,7 @@ const [isTool, setIsTool] = useState(false);
         {isPicked === 'meteorite' && <MeteoriteTable />}
         { isPicked === 'tool' && <EducatorToolTable /> }
         <Button variant="outlined" onClick={logout}>Sign Out</Button>
+        <Button variant="outlined" onClick={getMeteorites}>Get</Button>
       </div>
     
     );

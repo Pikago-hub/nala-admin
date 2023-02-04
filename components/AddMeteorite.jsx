@@ -3,13 +3,49 @@
 'use client'
 
 import { Button, TextField, Card, CardContent, CardActions, CardHeader,  } from '@mui/material'
+import { GeoPoint } from 'firebase/firestore';
 import { useState } from 'react';
+import { collection, addDoc, doc, query } from "firebase/firestore"; 
+import {firestore }from '../utils/firebase'
 const AddMeteorite = () => {
-    const [description, setDescription] = useState("");
+  const [description, setDescription] = useState("");
+  const [name, setName] = useState("");
   const [visible, setVisible] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
-  const [picture, setPicture] = useState("https://www.nhm.ac.uk/content/dam/nhmwww/discover/three-types-of-meteorites/iron-meteorite-dark-fusion-crust-two-column.jpg.thumb.768.768.jpg");
+  //const [coordinates, setCoordinates] = useState(new GeoPoint(parseInt(latitude), parseInt(longitude)))
+// ADD A NEW DOCUMENT TO YOUR COLLECTION
+const addMeteorite = async (meteoriteData) => {
+    
+  const db = firestore
+    const q = query(collection(db, "Meteorites"));
+
+const querySnapshot = await addDoc(q, meteoriteData);
+  //const newMeteorite = await addDoc(meteoriteCollection, { ...meteoriteData });
+  //console.log(`The new meteorite was created at ${newMeteorite.path}`);
+  
+};
+  const addNewMeteorite = (e) => {
+    
+    e.preventDefault();
+   // setCoordinates(new GeoPoint(parseInt(latitude), parseInt(longitude)))
+    //console.log(coordinates)
+    console.log(new GeoPoint(parseInt(latitude), parseInt(longitude)))
+    const coordinates = new GeoPoint(parseInt(latitude), parseInt(longitude))
+    addMeteorite({
+        coordinates,
+        
+        name,
+        description,
+        visible,
+        
+    });
+    
+    //console.log("successfully added a new Meteorite");
+    alert("successfully added a new Meteorite")
+    
+  };
+
     return(
         <form onSubmit={(e) => addNewMeteorite(e)} style={{
              //width: '50%',
@@ -124,7 +160,7 @@ const AddMeteorite = () => {
                  <button >Add Meteorite</button>
                  */
        }
-           <button >Add Meteorite</button>
+           <Button variant="outlined" onClick={addNewMeteorite}>Add Meteorite</Button>
                </form>
     )
     
