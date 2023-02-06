@@ -72,7 +72,7 @@ const querySnapshot = await addDoc(q, meteoriteData);
                    
                  />
                  <TextField
-                  
+                  inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                    fullWidth
                    id="lat"
                    type="longitude"

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 //import {auth} from '../../firebase/initFirebase'
 //import {useAuthState} from 'react-firebase-hooks/auth'
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, TextField, Card, CardContent, CardActions, CardHeader,  } from '@mui/material'
 //import * as React from 'react';
 import Paper from '@mui/material/Paper';
@@ -63,12 +63,12 @@ const Item = styled(Paper)(({ theme }) => ({
     const router = useRouter()
     const [open, setOpen] = React.useState(false);
     const [openEdu, setOpenEdu] = React.useState(false);
+    const [meteorites, setMeteorites] = useState([])
+    const [tools, setTools] = useState([])
     const handleOpen = () => {
       if(isPicked === 'meteorite'){
-        //console.log('here')
         setOpen(true);}
         if(isPicked === 'tool'){
-          //console.log('here')
           setOpenEdu(true);}
     }
     const handleClose = () => setOpen(false);
@@ -82,48 +82,57 @@ const Item = styled(Paper)(({ theme }) => ({
       const handleChange = (event) => {
         setName(event.target.value);
       };
-    //const [coordinates, setCoordinates] = useState<GeoPoint>(new GeoPoint(35, Math.floor(Math.random() * (-99 - -94 + 1)) + -94));
-  
-  const [isMeteorite, setIsMeteorite] = useState(false);
   const [isPicked, setIsPicked] = useState('default');
   const pickingMeteorite = () =>{
-    //setIsTool(false)
     setIsPicked('meteorite')
-    //setIsMeteorite(true)
-    console.log(isPicked)
 }
-const [isTool, setIsTool] = useState(false);
+
   const pickingTool = () =>{
-    //setIsMeteorite(false)
-    //setIsTool(true)
     setIsPicked('tool')
-    console.log(isPicked)
 }
   const [name, setName] = useState("");
   
- 
+  useEffect(() => {
+    const getData = () => {
+       getMeteorites()
+       getTools()
+
+    };
+
+    getData();
+  }, []);
   
-  //const meteoriteCollection = collection(firestore, "Meteorites");
   
   
-  const [meteorites, setMeteorites] = useState([])
+  
+  
   const getMeteorites = async () => {
-    //const meteoritesQuery = query(meteoritesCollection,where('show','==',true),limit(10));
-    //const querySnapshot = await getDocs(meteoritesQuery);
-    //const result: QueryDocumentSnapshot<DocumentData>[] = [];
-    //querySnapshot.forEach((snapshot) => {
-    //  result.push(snapshot);
-    //})
-    //setEduTools(result);
     const db = firestore
     const q = query(collection(db, "Meteorites"));
-
 const querySnapshot = await getDocs(q);
+console.log(querySnapshot)
+let newArray = []
 querySnapshot.forEach((doc) => {
-  // doc.data() is never undefined for query doc snapshots
-  console.log(doc.id, " => ", doc.data());
-});
+  let newData = doc.data() 
+  newArray.push(newData)
+}
 
+);
+  setMeteorites(newArray)
+  };
+  const getTools = async () => {
+    const db = firestore
+    const q = query(collection(db, "Educational Resources"));
+const querySnapshot = await getDocs(q);
+console.log(querySnapshot)
+let newArray = []
+querySnapshot.forEach((doc) => {
+  let newData = doc.data() 
+  newArray.push(newData)
+}
+
+);
+  setTools(newArray)
   };
 
     if(loading){
@@ -192,10 +201,10 @@ querySnapshot.forEach((doc) => {
         
        
         
-        {isPicked === 'meteorite' && <MeteoriteTable />}
-        { isPicked === 'tool' && <EducatorToolTable /> }
+        {isPicked === 'meteorite' && <MeteoriteTable data={meteorites} />}
+        { isPicked === 'tool' && <EducatorToolTable data={tools}/> }
         <Button variant="outlined" onClick={logout}>Sign Out</Button>
-        <Button variant="outlined" onClick={getMeteorites}>Get</Button>
+       
       </div>
     
     );
@@ -203,63 +212,11 @@ querySnapshot.forEach((doc) => {
 
  export default AdminDashBoard
 
- const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-    {
-      id: 'population',
-      label: 'Population',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-      id: 'size',
-      label: 'Size\u00a0(km\u00b2)',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-      id: 'density',
-      label: 'Density',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toFixed(2),
-    },
-    {
-        id:'actions',
-        label: 'Actions',
-        minWidth: 170,
-        align:'right',
-
-    }
-  ];
+ 
   
-  function createData(name, code, population, size) {
-    const density = population / size;
-    return { name, code, population, size, density };
-  }
   
-  const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
-  ];
   
-   function MeteoriteTable() {
+   function MeteoriteTable(props) {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
   
@@ -271,7 +228,8 @@ querySnapshot.forEach((doc) => {
       setRowsPerPage(+event.target.value);
       setPage(0);
     };
-  
+    const data = props.data
+    console.log('jj',data)
     return (
       <div>
       <div>
@@ -285,26 +243,52 @@ querySnapshot.forEach((doc) => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }}
-                  >
-                    {column.label}
+                
+                  <TableCell>
+                    Coordinates
+                    
+                   
                   </TableCell>
-                ))}
+                  <TableCell>
+                    Name
+                    
+                   
+                  </TableCell>
+                  <TableCell>
+                    Description
+                    
+                   
+                  </TableCell>
+                  <TableCell>
+                    Actions
+                    
+                   
+                  </TableCell>
+                
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows
+              {/*data
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                     //console.log(index, + 'sdsd', row)
                     const values = row
+                    console.log('dsff', row)
                   return (
+                    
                     <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                      {columns.map((column, index) => {
+                      {
+                        columns.map((column, index) => {
+                          //const value = row[column.id];
+                          //console.log(index)
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                             jkkkj
+                            </TableCell>
+                          );
+                        })
+                      }
+                      {/*columns.map((column, index) => {
                         const value = row[column.id];
                         //console.log(index)
                         return (
@@ -317,15 +301,35 @@ querySnapshot.forEach((doc) => {
                       })}
                       
                     </TableRow>
+                    
                   );
-                })}
+                })}*/}
+                {data.map(
+    (row, index) => (
+      <TableRow
+        id={row.id}
+        key={row.id}
+        //selected={selectedResources.includes(name)}
+        //position={index}
+      >
+        
+        <TableCell> [{row.coordinates._lat},{row.coordinates._long}]</TableCell>
+
+        <TableCell>{row.name}</TableCell>
+        <TableCell>{row.shortDescription}</TableCell>
+        <TableCell>
+        <div><Button onClick={()=>{console.log(row)}}>Edit M</Button> <Button>Delete</Button></div>
+        </TableCell>
+      </TableRow>
+    )
+  )}
             </TableBody>
           </Table>
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={rows.length}
+          count={data.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -337,10 +341,11 @@ querySnapshot.forEach((doc) => {
     );
   }
 
-  function EducatorToolTable() {
+  function EducatorToolTable(props) {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  
+    const data  = props.data
+    console.log('sdsdsd', data)
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
@@ -356,47 +361,61 @@ querySnapshot.forEach((doc) => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }}
-                  >
-                    {column.label}
+              <TableCell>
+                    Title
+                    
+                   
                   </TableCell>
-                ))}
+                  <TableCell>
+                    Category
+                    
+                   
+                  </TableCell>
+                  <TableCell>
+                    Description
+                    
+                   
+                  </TableCell>
+                  <TableCell>
+                    Pdf Link
+                    
+                   
+                  </TableCell>
+                  <TableCell>
+                    Actions
+                    
+                   
+                  </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                    //console.log(index, + 'sdsd', row)
-                    const values = row
-                  return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                      {columns.map((column, index) => {
-                        const value = row[column.id];
-                        //console.log(index)
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            { column.id === 'actions'
-                              ? <div><Button onClick={()=>{console.log(values)}}>Edit I</Button> <Button>Delete </Button></div>
-                              : value}
-                          </TableCell>
-                        );
-                      })}
+              {data.map((row, index) => (
+                  
+                    <TableRow
+                      id={row.id}
+                      key={row.id}
+                      //selected={selectedResources.includes(name)}
+                      //position={index}
+                    >
                       
+                      <TableCell> {row.title}</TableCell>
+              
+                      <TableCell>{row.category}</TableCell>
+                      <TableCell>{row.description}</TableCell>
+                      <TableCell>{row.pdfLink}</TableCell>
+                      <TableCell>
+                      <div><Button onClick={()=>{console.log(row)}}>Edit I</Button> <Button>Delete</Button></div>
+                      </TableCell>
                     </TableRow>
-                  );
-                })}
+                  
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={rows.length}
+          count={data.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

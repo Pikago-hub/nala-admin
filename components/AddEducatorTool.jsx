@@ -4,14 +4,49 @@
 
 import { Button, TextField, Card, CardContent, CardActions, CardHeader,  } from '@mui/material'
 import { useState } from 'react';
+import { collection, addDoc, doc, query } from "firebase/firestore"; 
+import {firestore }from '../utils/firebase'
+
+
 const AddEducatorTool = () => {
-    const [description, setDescription] = useState("");
+  const [description, setDescription] = useState("");
   const [visible, setVisible] = useState("");
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const [picture, setPicture] = useState("https://www.nhm.ac.uk/content/dam/nhmwww/discover/three-types-of-meteorites/iron-meteorite-dark-fusion-crust-two-column.jpg.thumb.768.768.jpg");
+  const [title, setTitle] = useState("");
+  const [pdfLink, setpdfLink] = useState("");
+  const [category, setCategory] = useState("")
+  const addTool = async (data) => {
+    
+    const db = firestore
+      const q = query(collection(db, "Educational Resources"));
+  
+  const querySnapshot = await addDoc(q, data);
+    //const newMeteorite = await addDoc(meteoriteCollection, { ...meteoriteData });
+    //console.log(`The new meteorite was created at ${newMeteorite.path}`);
+    
+  };
+    const addNewTool = (e) => {
+      
+      e.preventDefault();
+     // setCoordinates(new GeoPoint(parseInt(latitude), parseInt(longitude)))
+      //console.log(coordinates)
+      //console.log(new GeoPoint(parseInt(latitude), parseInt(longitude)))
+      //const coordinates = new GeoPoint(parseInt(latitude), parseInt(longitude))
+      addTool({
+          title,
+          description,
+          pdfLink,
+          category
+          
+      });
+      
+      //console.log("successfully added a new Meteorite");
+      alert("successfully added a new Tool")
+      
+    };
+  
+
     return(
-        <form onSubmit={(e) => addNewMeteorite(e)} style={{
+        <form onSubmit={(e) => addNewTool(e)} style={{
              //width: '50%',
              //margin: 'auto',
             // textAlign:'center',
@@ -24,15 +59,15 @@ const AddEducatorTool = () => {
              <CardContent>
                <div>
                  <TextField
-                   inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                   
                    fullWidth
                    id="lat"
                    type="latitude"
-                   label="latitude"
+                   label="Title"
                    
                    margin="normal"
-                   value={latitude}
-                   onChange={(e) => setLatitude(e.target.value)}
+                   value={title}
+                   onChange={(e) => setTitle(e.target.value)}
                    
                  />
                  <TextField
@@ -40,11 +75,11 @@ const AddEducatorTool = () => {
                    fullWidth
                    id="lat"
                    type="longitude"
-                   label="longitude"
+                   label="Description"
                    
                    margin="normal"
-                   value={longitude}
-                   onChange={(e) => setLongitude(e.target.value)}
+                   value={description}
+                   onChange={(e) => setDescription(e.target.value)}
                    
                  />
                  <TextField
@@ -52,11 +87,11 @@ const AddEducatorTool = () => {
                   fullWidth
                   id="name"
                   type="name"
-                  label="name"
+                  label="PDF"
                   
                   margin="normal"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={pdfLink}
+                  onChange={(e) => setpdfLink(e.target.value)}
                   
                 />
                 <TextField
@@ -64,11 +99,11 @@ const AddEducatorTool = () => {
                   fullWidth
                   id="desc"
                   type="desc"
-                  label="description"
+                  label="Category"
                   
                   margin="normal"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
                   
                 />
                 <label>Visible</label>
@@ -124,7 +159,7 @@ const AddEducatorTool = () => {
                  <button >Add Meteorite</button>
                  */
        }
-           <button >Add Tool</button>
+           <Button variant="outlined" onClick={addNewTool}>Add Tool</Button>
                </form>
     )
     
