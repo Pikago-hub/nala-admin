@@ -8,7 +8,7 @@ import { GeoPoint } from 'firebase/firestore';
 import {  useState, useId } from 'react';
 import { collection, addDoc, doc, query } from "firebase/firestore"; 
 import {firestore }from '../utils/firebase'
-const AddMeteorite = () => {
+const EditMeteorite = () => {
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [visible, setVisible] = useState("");
@@ -166,4 +166,4 @@ const querySnapshot = await addDoc(q, meteoriteData);
     
 }
 
-export default AddMeteorite;
+export default EditMeteorite;

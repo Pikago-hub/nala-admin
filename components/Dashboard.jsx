@@ -26,11 +26,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Modal from '@mui/material/Modal';
 import AddMeteorite from './AddMeteorite';
 import AddEducatorTool from './AddEducatorTool';
+import MeteoriteTable from './MeteoriteTable';
 //import  TableComponent  from '../components'
 //import { GeoPoint } from "firebase/firestore";
 import { firestore, auth} from "../utils/firebase";
 import {
-  collection, deleteDoc, doc, DocumentData, getDocs, limit, query, QueryDocumentSnapshot, updateDoc, where, getDoc}
+  collection, deleteDoc, doc, DocumentData, getDocs, limit, query, QueryDocumentSnapshot, updateDoc, where, getDoc, onSnapshot}
    from "firebase/firestore";
   import {
     onAuthStateChanged,
@@ -154,7 +155,7 @@ querySnapshot.forEach((doc) => {
            
           }}>
             <div>
-              mnfslkdfkjsdfjkjsfdkjsdfkjlsdfjksf
+              ______________
             </div>
             <Grid container spacing={2}>
   <Grid item xs={6} md={8}>
@@ -216,130 +217,7 @@ querySnapshot.forEach((doc) => {
   
   
   
-   function MeteoriteTable(props) {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  
-    const handleChangePage = (event, newPage) => {
-      setPage(newPage);
-    };
-  
-    const handleChangeRowsPerPage = (event) => {
-      setRowsPerPage(+event.target.value);
-      setPage(0);
-    };
-    const data = props.data
-    console.log('jj',data)
-    return (
-      <div>
-      <div>
-        kjdlvfksdjfsdnf
-        djfkdsfjkljdsfjkl 
-        dnjf
-      </div>
-      <Card>
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                
-                  <TableCell>
-                    Coordinates
-                    
-                   
-                  </TableCell>
-                  <TableCell>
-                    Name
-                    
-                   
-                  </TableCell>
-                  <TableCell>
-                    Description
-                    
-                   
-                  </TableCell>
-                  <TableCell>
-                    Actions
-                    
-                   
-                  </TableCell>
-                
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {/*data
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                    //console.log(index, + 'sdsd', row)
-                    const values = row
-                    console.log('dsff', row)
-                  return (
-                    
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                      {
-                        columns.map((column, index) => {
-                          //const value = row[column.id];
-                          //console.log(index)
-                          return (
-                            <TableCell key={column.id} align={column.align}>
-                             jkkkj
-                            </TableCell>
-                          );
-                        })
-                      }
-                      {/*columns.map((column, index) => {
-                        const value = row[column.id];
-                        //console.log(index)
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            { column.id === 'actions'
-                              ? <div><Button onClick={()=>{console.log(values)}}>Edit M</Button> <Button>Delete</Button></div>
-                              : value}
-                          </TableCell>
-                        );
-                      })}
-                      
-                    </TableRow>
-                    
-                  );
-                })}*/}
-                {data.map(
-    (row, index) => (
-      <TableRow
-        id={row.id}
-        key={row.id}
-        //selected={selectedResources.includes(name)}
-        //position={index}
-      >
-        
-        <TableCell> [{row.coordinates._lat},{row.coordinates._long}]</TableCell>
-
-        <TableCell>{row.name}</TableCell>
-        <TableCell>{row.shortDescription}</TableCell>
-        <TableCell>
-        <div><Button onClick={()=>{console.log(row)}}>Edit M</Button> <Button>Delete</Button></div>
-        </TableCell>
-      </TableRow>
-    )
-  )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={data.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-      </Card>
-      </div>
-    );
-  }
+   
 
   function EducatorToolTable(props) {
     const [page, setPage] = React.useState(0);
@@ -354,8 +232,29 @@ querySnapshot.forEach((doc) => {
       setRowsPerPage(+event.target.value);
       setPage(0);
     };
+    const deleteTool = async(data) =>{
+      const db = firestore
+      
+     alert('are you sure you want to delete this')
+     
+    const citiesRef = collection(db, "Educational Resources");
+    
+
+  const q = query(citiesRef, where("_id", "==", data._id));
+  const cool = onSnapshot(q, (querySnapshot) => {
+    querySnapshot.forEach((doc) =>{
+     //doc.data
+      deleteDoc(doc.ref);
+    })
+  })
+  
+}
   
     return (
+      <div>
+      <div>
+        ______________
+      </div>
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
@@ -377,7 +276,22 @@ querySnapshot.forEach((doc) => {
                    
                   </TableCell>
                   <TableCell>
-                    Pdf Link
+                    Link
+                    
+                   
+                  </TableCell>
+                  <TableCell>
+                    Educational Standards
+                    
+                   
+                  </TableCell>
+                  <TableCell>
+                    Picture
+                    
+                   
+                  </TableCell>
+                  <TableCell>
+                    Visible
                     
                    
                   </TableCell>
@@ -392,8 +306,8 @@ querySnapshot.forEach((doc) => {
               {data.map((row, index) => (
                   
                     <TableRow
-                      id={row.id}
-                      key={row.id}
+                      id={row._id}
+                      key={row._id}
                       //selected={selectedResources.includes(name)}
                       //position={index}
                     >
@@ -402,9 +316,12 @@ querySnapshot.forEach((doc) => {
               
                       <TableCell>{row.category}</TableCell>
                       <TableCell>{row.description}</TableCell>
-                      <TableCell>{row.pdfLink}</TableCell>
+                      <TableCell>{row.link}</TableCell>
+                      <TableCell>{row.standard}</TableCell>
+                      <TableCell>{row.picture}</TableCell>
+                      <TableCell>{row.visible}</TableCell>
                       <TableCell>
-                      <div><Button onClick={()=>{console.log(row)}}>Edit I</Button> <Button>Delete</Button></div>
+                      <div><Button onClick={()=>{console.log(row)}}>Edit</Button> <Button onClick={()=> {deleteTool(row)}}>Delete</Button></div>
                       </TableCell>
                     </TableRow>
                   
@@ -422,5 +339,7 @@ querySnapshot.forEach((doc) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+        
+      </div>
     );
   }
