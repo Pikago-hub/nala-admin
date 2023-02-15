@@ -14,7 +14,7 @@ const AddEducatorTool = () => {
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
   const [category, setCategory] = useState("")
-  const [standard, setStandard] = useState("")
+  const [standard, setStandard] = useState("Elementary")
   const [picture, setPicture] = useState("")
   const addTool = async (data) => {
     

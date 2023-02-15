@@ -222,8 +222,16 @@ querySnapshot.forEach((doc) => {
   function EducatorToolTable(props) {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [open, setOpen] = React.useState(false);
+    const [data1, setData1] = React.useState({});
     const data  = props.data
     console.log('sdsdsd', data)
+    const handleOpen = () => {
+     
+      setOpen(true);
+    }
+     
+  const handleClose = () => setOpen(false);
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
@@ -232,15 +240,19 @@ querySnapshot.forEach((doc) => {
       setRowsPerPage(+event.target.value);
       setPage(0);
     };
+    const areYouSure = (data) => {
+      handleOpen()
+      setData1(data)
+    }
     const deleteTool = async(data) =>{
       const db = firestore
       
-     alert('are you sure you want to delete this')
+     
      
     const citiesRef = collection(db, "Educational Resources");
     
 
-  const q = query(citiesRef, where("_id", "==", data._id));
+  const q = query(citiesRef, where("_id", "==", data1._id));
   const cool = onSnapshot(q, (querySnapshot) => {
     querySnapshot.forEach((doc) =>{
      //doc.data
@@ -321,7 +333,7 @@ querySnapshot.forEach((doc) => {
                       <TableCell>{row.picture}</TableCell>
                       <TableCell>{row.visible}</TableCell>
                       <TableCell>
-                      <div><Button onClick={()=>{console.log(row)}}>Edit</Button> <Button onClick={()=> {deleteTool(row)}}>Delete</Button></div>
+                      <div><Button onClick={()=>{console.log(row)}}>Edit</Button> <Button onClick={()=> {areYouSure(row)}}>Delete</Button></div>
                       </TableCell>
                     </TableRow>
                   
@@ -329,6 +341,28 @@ querySnapshot.forEach((doc) => {
             </TableBody>
           </Table>
         </TableContainer>
+        <Modal
+        open={ open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        
+        <Card sx={{ minWidth: 500, }}>
+      
+      <CardContent>
+        
+        Are you sure you want to delete this?
+      </CardContent>
+      <CardActions>
+        <Button onClick={deleteTool}>Yes</Button>
+        <Button onClick={handleClose} >No</Button>
+      </CardActions>
+    </Card>
+        
+         
+        
+      </Modal>
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"

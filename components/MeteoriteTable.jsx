@@ -26,6 +26,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Modal from '@mui/material/Modal';
 import EditMeteorite from './EditMeteorite';
 import AddEducatorTool from './AddEducatorTool';
+import AddMeteorite from './AddMeteorite'
 import Typography from '@mui/material';
 import { firestore, auth} from "../utils/firebase";
 import {
