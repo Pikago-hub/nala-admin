@@ -25,6 +25,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Modal from '@mui/material/Modal';
 import EditMeteorite from './EditMeteorite';
+import EditTool from './EditTool'
 import AddEducatorTool from './AddEducatorTool';
 import AddMeteorite from './AddMeteorite'
 import Typography from '@mui/material';
@@ -63,7 +64,7 @@ function MeteoriteTable(props) {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [open, setOpen] = React.useState(false);
-    //const [openEdit, setOpenEdit] = React.useState(false);
+    const [openEdit, setOpenEdit] = React.useState(false);
     const [data1, setData1] = React.useState({});
     const handleOpen = () => {
      
@@ -71,9 +72,10 @@ function MeteoriteTable(props) {
       }
        
     const handleClose = () => setOpen(false);
-    const handleOpenEdit = () => {
+    const handleOpenEdit = (data) => {
      
-      //setOpenEdit(true);
+      setOpenEdit(true)
+      setData1(data)
     }
      
   const handleCloseEdit = () => setOpenEdit(false);
@@ -108,6 +110,7 @@ function MeteoriteTable(props) {
       setData1(data)
     }
     const data = props.data
+
     console.log('jj',data)
     return (
       <div>
@@ -184,7 +187,7 @@ function MeteoriteTable(props) {
         <TableCell>{row.picture}</TableCell>
         <TableCell>{row.visible}</TableCell>
         <TableCell>
-        <div><Button onClick={handleOpenEdit(row)}>Edit</Button> <Button onClick={()=> {areYouSure(row)}}>Delete</Button></div>
+        <div><Button onClick={() => {handleOpenEdit(row)}}>Edit</Button> <Button onClick={()=> {areYouSure(row)}}>Delete</Button></div>
         </TableCell>
       </TableRow>
     )
@@ -214,7 +217,7 @@ function MeteoriteTable(props) {
          
         
       </Modal>
-      {/*
+      {
       <Modal
         open={ openEdit}
         onClose={handleCloseEdit}
@@ -222,12 +225,12 @@ function MeteoriteTable(props) {
         aria-describedby="modal-modal-description"
       >
         
-        <Box sx={style}></Box>
+        <EditMeteorite data={data1}/>
         
          
         
       </Modal>
-    */}
+    }
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"

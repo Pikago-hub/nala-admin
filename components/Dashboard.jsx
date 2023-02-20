@@ -27,6 +27,8 @@ import Modal from '@mui/material/Modal';
 import AddMeteorite from './AddMeteorite';
 import AddEducatorTool from './AddEducatorTool';
 import MeteoriteTable from './MeteoriteTable';
+import EditMeteorite from './EditMeteorite';
+import EditTool from './EditTool';
 //import  TableComponent  from '../components'
 //import { GeoPoint } from "firebase/firestore";
 import { firestore, auth} from "../utils/firebase";
@@ -223,6 +225,7 @@ querySnapshot.forEach((doc) => {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [open, setOpen] = React.useState(false);
+    const [openEdit, setOpenEdit] = React.useState(false);
     const [data1, setData1] = React.useState({});
     const data  = props.data
     console.log('sdsdsd', data)
@@ -244,6 +247,11 @@ querySnapshot.forEach((doc) => {
       handleOpen()
       setData1(data)
     }
+    const handleEdit = (data) => {
+      setOpenEdit(true)
+      setData1(data)
+    }
+    const handleCloseEdit = () => setOpenEdit(false);
     const deleteTool = async(data) =>{
       const db = firestore
       
@@ -333,7 +341,7 @@ querySnapshot.forEach((doc) => {
                       <TableCell>{row.picture}</TableCell>
                       <TableCell>{row.visible}</TableCell>
                       <TableCell>
-                      <div><Button onClick={()=>{console.log(row)}}>Edit</Button> <Button onClick={()=> {areYouSure(row)}}>Delete</Button></div>
+                      <div><Button onClick={()=>{handleEdit(row)}}>Edit</Button> <Button onClick={()=> {areYouSure(row)}}>Delete</Button></div>
                       </TableCell>
                     </TableRow>
                   
@@ -362,6 +370,14 @@ querySnapshot.forEach((doc) => {
         
          
         
+      </Modal>
+      <Modal
+        open={ openEdit }
+        onClose={handleCloseEdit}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <EditTool data={data1}/>
       </Modal>
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}

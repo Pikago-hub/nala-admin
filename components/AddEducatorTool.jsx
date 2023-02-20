@@ -141,45 +141,8 @@ const AddEducatorTool = () => {
                </CardActions>
              </Card>
        
-       {/*
-                 <label>Meteorite latitude:</label>
-                 <input
-                   type="text"
-                   required
-                   value={latitude}
-                   onChange={(e) => setLatitude(e.target.value)}
-                 />
-                 <label>Meteorite longitude:</label>
-                 <input
-                   type="text"
-                   required
-                   value={longitude}
-                   onChange={(e) => setLongitude(e.target.value)}
-                 />
-                 <label>Meteorite name:</label>
-                 <textarea
-                   required
-                   value={name}
-                   onChange={(e) => setName(e.target.value)}
-                 ></textarea>
-                 
-                 <label>Meteorite description:</label>
-                 <textarea
-                   required
-                   value={description}
-                   onChange={(e) => setDescription(e.target.value)}
-                 ></textarea>
-         
-                 <label>Visible</label>
-                 <select value={visible} onChange={(e) => setVisible(e.target.value)}>
-                   <option value=""> </option>
-                   <option value="True">True</option>
-                   <option value="False">False</option>
-                   </select>
-         
-                 <button >Add Meteorite</button>
-                 */
-       }
+     
+      
            <Button variant="outlined" onClick={addNewTool}>Add Tool</Button>
                </form>
     )

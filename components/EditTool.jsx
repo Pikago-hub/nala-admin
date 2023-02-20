@@ -8,16 +8,16 @@ import { GeoPoint } from 'firebase/firestore';
 import {  useState, useId } from 'react';
 import { collection, addDoc, doc, query, where, onSnapshot, updateDoc } from "firebase/firestore"; 
 import {firestore }from '../utils/firebase'
-const EditMeteorite = (props) => {
+const EditTool = (props) => {
   const [description, setDescription] = useState(props.data.description);
-  const [name, setName] = useState(props.data.name);
+  const [title, setTitle] = useState(props.data.title);
   const [visible, setVisible] = useState(props.data.visible);
-  const [nation, setNation] = useState(props.data.nation);
-  const [state, setState] = useState(props.data.state);
+  const [link, setLink] = useState(props.data.link);
+  const [category, setCategory] = useState(props.data.category);
+  const [standard, setStandard] = useState(props.data.standard);
   const [picture, setPicture] = useState(props.data.picture);
   const [id, setId] = useState(props.data._id)
-  const [latitude, setLatitude] = useState(props.data.coordinates._lat);
-  const [longitude, setLongitude] = useState(props.data.coordinates._long);
+
   const data = props.data
 // ADD A NEW DOCUMENT TO YOUR COLLECTION
 const addMeteorite = async (meteoriteData) => {
@@ -34,32 +34,31 @@ const querySnapshot = await addDoc(q, meteoriteData);
   
 };
 
-  const editMeteorite = async (e) => {
+  const editTool = async (e) => {
     
     e.preventDefault();
     //console.log(new GeoPoint(parseInt(latitude), parseInt(longitude)))
-    const coordinates = new GeoPoint(parseInt(latitude), parseInt(longitude))
+    
     //let _id = uuid().toString();
     const db = firestore
       
      
      
-    const citiesRef = collection(db, "Meteorites");
+    const citiesRef = collection(db, "Educational Resources");
     
 
     const q = query(citiesRef, where("_id", "==", data._id));
     const cool = onSnapshot(q, (querySnapshot) => {
     querySnapshot.forEach((doc) =>{
-      const coordinates = new GeoPoint(parseInt(latitude), parseInt(longitude))
      //doc.data
       updateDoc(doc.ref, {
       description: description,
-      name: name,
-      nation: nation,
-      state: state,
-      picture: picture,
-      coordinates: coordinates,
-      visible: visible
+      title: title,
+      link: link,
+      category: category,
+      standard: standard,
+      visible: visible,
+      picture: picture
     });
     })
   })
@@ -69,7 +68,7 @@ const querySnapshot = await addDoc(q, meteoriteData);
   };
 
     return(
-        <form onSubmit={(e) => editMeteorite(e)} style={{
+        <form onSubmit={(e) => editTool(e)} style={{
              //width: '50%',
              //margin: 'auto',
             // textAlign:'center',
@@ -78,31 +77,32 @@ const querySnapshot = await addDoc(q, meteoriteData);
              
            }}>
                <Card >
-             <CardHeader  title="Edit a Meteorite: " />
+             <CardHeader  title="Edit Educational Tool: " />
+           
              <CardContent>
                <div>
                  <TextField
-                   inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                   
                    fullWidth
                    id="lat"
                    type="latitude"
-                   label="latitude"
+                   label="Title"
                    
                    margin="normal"
-                   value={latitude}
-                   onChange={(e) => setLatitude(e.target.value)}
+                   value={title}
+                   onChange={(e) => setTitle(e.target.value)}
                    
                  />
                  <TextField
-                  inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                  
                    fullWidth
                    id="lat"
                    type="longitude"
-                   label="longitude"
+                   label="Description"
                    
                    margin="normal"
-                   value={longitude}
-                   onChange={(e) => setLongitude(e.target.value)}
+                   value={description}
+                   onChange={(e) => setDescription(e.target.value)}
                    
                  />
                  <TextField
@@ -110,11 +110,11 @@ const querySnapshot = await addDoc(q, meteoriteData);
                   fullWidth
                   id="name"
                   type="name"
-                  label="name"
+                  label="Link"
                   
                   margin="normal"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={link}
+                  onChange={(e) => setLink(e.target.value)}
                   
                 />
                 <TextField
@@ -122,60 +122,51 @@ const querySnapshot = await addDoc(q, meteoriteData);
                   fullWidth
                   id="desc"
                   type="desc"
-                  label="description"
-                  
-                  margin="normal"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  
-                />
-                <TextField
-                  
-                  fullWidth
-                  id="desc"
-                  type="desc"
-                  label="picture"
+                  label="Picture"
                   
                   margin="normal"
                   value={picture}
                   onChange={(e) => setPicture(e.target.value)}
                   
                 />
-                <label>Visible:  </label>
+                <label>Visible: </label>
                  <select value={visible} onChange={(e) => setVisible(e.target.value)}>
                    <option value=""> </option>
                    <option value="True">True</option>
                    <option value="False">False</option>
                    </select>
                    <br></br>
-                   <label>Nation:  </label>
-                 <select value={nation} onChange={(e) => setNation(e.target.value)}>
-                   <option value="">n/a </option>
-                   <option value="Cherokee">Cherokee</option>
-                   <option value="Chickasaw">Chickasaw</option>
-                   <option value="Choctaw">Choctaw</option>
+                   <label>Category: </label>
+                 <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                   <option value=""> </option>
+                   <option value="Activity">Activity</option>
+                   <option value="External">External Resource</option>
                    </select>
                    <br></br>
-                   <label>State:  </label>
-                 <select value={state} onChange={(e) => setState(e.target.value)}>
-                   <option value=""> </option>
-                   <option value="Oklahoma">Oklahoma</option>
-                   
+               <label>Educational Standard: </label>
+                 <select value={standard} onChange={(e) => setStandard(e.target.value)}>
+                    <option value=""> </option>
+                   <option value="Elementary"> Elementary School Resources </option>
+                   <option value="Middle">Middle School Resources</option>
+                   <option value="High">High School Resources</option>
+                   <option value="University">University Level Resources</option>
+                   <option value="All">Learning for all Ages</option>
                    </select>
                </div>
              </CardContent>
              <CardActions>
-             <Button variant="outlined" onClick={editMeteorite}>Edit Meteorite</Button>
+             <Button variant="outlined" onClick={editTool}>Edit Tool</Button>
                </CardActions>
                
+               
              </Card>
+             </form>
        
       
            
-               </form>
     )
     
     
 }
 
-export default EditMeteorite;
+export default EditTool;
