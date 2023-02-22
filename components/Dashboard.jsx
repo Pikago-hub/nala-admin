@@ -43,13 +43,8 @@ import {
   } from 'firebase/auth'
   import { useAuthState } from 'react-firebase-hooks/auth';
 
-const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  }));
+
+  /*
   const style = {
     position: 'absolute',
     top: '50%',
@@ -61,7 +56,7 @@ const Item = styled(Paper)(({ theme }) => ({
     boxShadow: 24,
     p: 4,
   };
-
+*/
  const AdminDashBoard = () => {
     const router = useRouter()
     const [open, setOpen] = React.useState(false);
@@ -187,7 +182,7 @@ querySnapshot.forEach((doc) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}><AddMeteorite /></Box>
+        <AddMeteorite />
          
         
       </Modal>
@@ -197,7 +192,7 @@ querySnapshot.forEach((doc) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}><AddEducatorTool /></Box>
+        <AddEducatorTool />
          
         
       </Modal>
@@ -267,7 +262,8 @@ querySnapshot.forEach((doc) => {
       deleteDoc(doc.ref);
     })
   })
-  
+  alert('successfully deleted a meteorite')
+  handleClose()
 }
   
     return (

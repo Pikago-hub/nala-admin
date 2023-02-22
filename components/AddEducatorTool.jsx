@@ -2,9 +2,11 @@
 
 'use client'
 
-import { Button, TextField, Card, CardContent, CardActions, CardHeader,  } from '@mui/material'
+import { Button, TextField, Card, CardContent, CardActions, CardHeader, Alert } from '@mui/material'
 import { useState } from 'react';
+import {storage }from '../utils/firebase';
 import { collection, addDoc, doc, query } from "firebase/firestore"; 
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {firestore }from '../utils/firebase'
 import { v4 as uuid } from 'uuid';
 
@@ -14,39 +16,87 @@ const AddEducatorTool = () => {
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
   const [category, setCategory] = useState("")
-  const [standard, setStandard] = useState("Elementary")
-  const [picture, setPicture] = useState("")
+  const [standard, setStandard] = useState("")
+  //const [picture, setPicture] = useState("")
+  const [file, setFile] = useState("");
+  const [percent, setPercent] = useState(0);
+  function handleChange(event) {
+    setFile(event.target.files[0]);
+}
   const addTool = async (data) => {
     
     const db = firestore
       const q = query(collection(db, "Educational Resources"));
   try{
   const querySnapshot = await addDoc(q, data);
+  
   }catch(err){
     alert(err)
   }
-    //const newMeteorite = await addDoc(meteoriteCollection, { ...meteoriteData });
-    //console.log(`The new meteorite was created at ${newMeteorite.path}`);
-    
+ 
   };
     const addNewTool = (e) => {
       
-      //e.preventDefault();
       let _id = uuid().toString();
-      addTool({
-          _id,
-          title,
-          description,
-          link,
-          category,
-          standard,
-          visible,
 
-          
-      });
+       if (!file) {
+                    alert("Please upload an image first!");
+                }
+        const storageRef = ref(storage, `/EducationalDocuments/${file.name}` )
+                // progress can be paused and resumed. It also exposes progress updates.
+                // Receives the storage reference and the file to upload.
+                const uploadTask = uploadBytesResumable(storageRef, file);
+         
+                uploadTask.on(
+                    "state_changed",
+                    (snapshot) => {
+                        const percent = Math.round(
+                            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                        );
+         
+                        // update progress
+                        setPercent(percent);
+        //console.log('sadsd', percent)
+                    },
+                    (err) => console.log(err),
+                       () => {
+                           // download url
+                           getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                            const picture = "" + url
+                            
+                            console.log('sdsddf', picture)
+                            //pictureHelper(pictureUrl)
+                            //setUrl(pictureUrl)
+                           // console.log(url)
+                           try{
+                            addTool({
+                              _id,
+                              title,
+                              description,
+                              link,
+                              category,
+                              standard,
+                              visible,
+                              picture
+                              
+                          });
+                          }catch(e){
+                            alert(e)
+                          }
+                            
+        });
+
+        alert('successfully added a new instructor tool')
+                  
+      }
+        );
+
+
+
+
       
-      //console.log("successfully added a new Meteorite");
-      //alert("successfully added a new Tool")
+      
+      
       
     };
   
@@ -100,6 +150,7 @@ const AddEducatorTool = () => {
                   onChange={(e) => setLink(e.target.value)}
                   
                 />
+                {/*
                 <TextField
                   
                   fullWidth
@@ -112,6 +163,10 @@ const AddEducatorTool = () => {
                   onChange={(e) => setPicture(e.target.value)}
                   
                 />
+          */}
+          <br></br>
+                <input type="file" onChange={handleChange} accept="/image/*" />
+                <br></br>
                 <label>Visible: </label>
                  <select value={visible} onChange={(e) => setVisible(e.target.value)}>
                    <option value=""> </option>
@@ -120,7 +175,7 @@ const AddEducatorTool = () => {
                    </select>
                    <br></br>
                    <label>Category: </label>
-                 <select value={visible} onChange={(e) => setCategory(e.target.value)}>
+                 <select value={category} onChange={(e) => setCategory(e.target.value)}>
                    <option value=""> </option>
                    <option value="Activity">Activity</option>
                    <option value="External">External Resource</option>
@@ -128,6 +183,7 @@ const AddEducatorTool = () => {
                    <br></br>
                <label>Educational Standard: </label>
                  <select value={standard} onChange={(e) => setStandard(e.target.value)}>
+                   <option value=""> </option>
                    <option value="Elementary"> Elementary School Resources </option>
                    <option value="Middle">Middle School Resources</option>
                    <option value="High">High School Resources</option>
@@ -137,13 +193,13 @@ const AddEducatorTool = () => {
                </div>
              </CardContent>
              <CardActions>
-             
+             <Button variant="outlined" onClick={addNewTool}>Add Tool</Button>
                </CardActions>
              </Card>
        
      
       
-           <Button variant="outlined" onClick={addNewTool}>Add Tool</Button>
+           
                </form>
     )
     

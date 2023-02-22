@@ -117,6 +117,7 @@ const querySnapshot = await addDoc(q, meteoriteData);
                   onChange={(e) => setLink(e.target.value)}
                   
                 />
+                {/*
                 <TextField
                   
                   fullWidth
@@ -129,6 +130,13 @@ const querySnapshot = await addDoc(q, meteoriteData);
                   onChange={(e) => setPicture(e.target.value)}
                   
                 />
+                <br></br>
+                <input type="file" onChange={handleChange} accept="/image/*" />
+                
+                
+                <br></br>
+        */}
+                
                 <label>Visible: </label>
                  <select value={visible} onChange={(e) => setVisible(e.target.value)}>
                    <option value=""> </option>

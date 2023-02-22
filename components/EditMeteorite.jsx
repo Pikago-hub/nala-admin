@@ -129,6 +129,7 @@ const querySnapshot = await addDoc(q, meteoriteData);
                   onChange={(e) => setDescription(e.target.value)}
                   
                 />
+                {/*
                 <TextField
                   
                   fullWidth
@@ -141,6 +142,7 @@ const querySnapshot = await addDoc(q, meteoriteData);
                   onChange={(e) => setPicture(e.target.value)}
                   
                 />
+          */}
                 <label>Visible:  </label>
                  <select value={visible} onChange={(e) => setVisible(e.target.value)}>
                    <option value=""> </option>

@@ -103,7 +103,10 @@ function MeteoriteTable(props) {
       deleteDoc(doc.ref);
     })
   }
+  
   )
+  alert('successfully deleted a meteorite')
+  handleClose()
     }
     const areYouSure = (data) => {
       handleOpen()
