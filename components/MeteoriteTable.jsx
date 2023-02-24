@@ -143,12 +143,32 @@ function MeteoriteTable(props) {
                    
                   </TableCell>
                   <TableCell>
-                    State
+                    Location
                     
                    
                   </TableCell>
                   <TableCell>
                     Nation
+                    
+                   
+                  </TableCell>
+                  <TableCell>
+                    Type
+                    
+                   
+                  </TableCell>
+                  <TableCell>
+                    Clan
+                    
+                   
+                  </TableCell>
+                  <TableCell>
+                    Class
+                    
+                   
+                  </TableCell>
+                  <TableCell>
+                    Group
                     
                    
                   </TableCell>
@@ -185,8 +205,12 @@ function MeteoriteTable(props) {
 
         <TableCell>{row.name}</TableCell>
         <TableCell>{row.description}</TableCell>
-        <TableCell>{row.state}</TableCell>
+        <TableCell>{row.location}</TableCell>
         <TableCell>{row.nation}</TableCell>
+        <TableCell>{row.type}</TableCell>
+        <TableCell>{row.clazz}</TableCell>
+        <TableCell>{row.clan}</TableCell>
+        <TableCell>{row.group}</TableCell>
         <TableCell>{row.picture}</TableCell>
         <TableCell>{row.visible}</TableCell>
         <TableCell>
@@ -226,6 +250,12 @@ function MeteoriteTable(props) {
         onClose={handleCloseEdit}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        style={{position:'absolute',
+        //top:'10%',
+        //left:'10%',
+        overflowY:'auto',
+        height:'100%',
+        display:'block'}}
       >
         
         <EditMeteorite data={data1}/>

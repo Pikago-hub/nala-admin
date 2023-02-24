@@ -16,12 +16,16 @@ const AddMeteorite = () => {
   const [name, setName] = useState("");
   const [visible, setVisible] = useState("");
   const [nation, setNation] = useState("");
-  const [state, setState] = useState("");
+  const [location, setLocation] = useState("");
   //const [picture, setPicture] = useState("");
   const [url, setUrl] = useState("");
   const [id, setId] = useState("")
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
+  const [type, setType] = useState("");
+  const [clan, setClan] = useState("");
+  const [clazz, setClazz] = useState("");
+  const [group, setGroup] = useState("");
   const [file, setFile] = useState("");
  const [percent, setPercent] = useState(0);
  // Handle file upload event and update state
@@ -41,10 +45,7 @@ const querySnapshot = await addDoc(q, meteoriteData);
 
   
 };
-const pictureHelper = (url) =>{
-    setPicture(url)
-    console.log('please', picture)
-}
+
 
   const addNewMeteorite = (e) => {
 
@@ -87,10 +88,14 @@ const pictureHelper = (url) =>{
                           addMeteorite({
                             _id,
                             coordinates,
-                            state,
+                            location,
                             name,
                             description,
                             nation,
+                            type,
+                            clan,
+                            clazz,
+                            group,
                             visible,
                             picture
                         });
@@ -116,9 +121,9 @@ const pictureHelper = (url) =>{
 
     return(
         <form onSubmit={(e) => addNewMeteorite(e)} style={{
-             //width: '50%',
-             //margin: 'auto',
-            // textAlign:'center',
+             width: '50%',
+             margin: 'auto',
+             textAlign:'center',
              //display: 'inline-block',
             
              
@@ -175,20 +180,56 @@ const pictureHelper = (url) =>{
                   onChange={(e) => setDescription(e.target.value)}
                   
                 />
-                {/*
+                {
                 <TextField
                   
                   fullWidth
                   id="desc"
                   type="desc"
-                  label="picture"
+                  label="type"
                   
                   margin="normal"
-                  value={picture}
-                  onChange={(e) => setPicture(e.target.value)}
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
                   
                 />
-          */}
+          }
+               <TextField
+                  
+                  fullWidth
+                  id="desc"
+                  type="desc"
+                  label="class"
+                  
+                  margin="normal"
+                  value={clazz}
+                  onChange={(e) => setClazz(e.target.value)}
+                  
+                />
+                <TextField
+                  
+                  fullWidth
+                  id="desc"
+                  type="desc"
+                  label="clan"
+                  
+                  margin="normal"
+                  value={clan}
+                  onChange={(e) => setClan(e.target.value)}
+                  
+                />
+                <TextField
+                  
+                  fullWidth
+                  id="desc"
+                  type="desc"
+                  label="group"
+                  
+                  margin="normal"
+                  value={group}
+                  onChange={(e) => setGroup(e.target.value)}
+                  
+                />
                 <br></br>
                 <input type="file" onChange={handleChange} accept="/image/*" />
                 
@@ -209,11 +250,11 @@ const pictureHelper = (url) =>{
                    <option value="Choctaw">Choctaw</option>
                    </select>
                    <br></br>
-                   <label>State:  </label>
-                 <select value={state} onChange={(e) => setState(e.target.value)}>
+                   <label>Location:  </label>
+                 <select value={location} onChange={(e) => setLocation(e.target.value)}>
                    <option value=""> </option>
-                   <option value="Oklahoma">Oklahoma</option>
-                   
+                   <option value="Oklahoma, USA">Oklahoma, USA</option>
+                   <option value="Texas, USA">Texas, USA</option>
                    </select>
                </div>
              </CardContent>

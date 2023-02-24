@@ -62,16 +62,16 @@ const querySnapshot = await addDoc(q, meteoriteData);
     });
     })
   })
-    
+  alert("successfully updated educational tool");
     
     
   };
 
     return(
         <form onSubmit={(e) => editTool(e)} style={{
-             //width: '50%',
-             //margin: 'auto',
-            // textAlign:'center',
+             width: '50%',
+             margin: 'auto',
+             textAlign:'center',
              //display: 'inline-block',
             
              

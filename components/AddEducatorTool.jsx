@@ -103,9 +103,9 @@ const AddEducatorTool = () => {
 
     return(
         <form onSubmit={(e) => addNewTool(e)} style={{
-             //width: '50%',
-             //margin: 'auto',
-            // textAlign:'center',
+             width: '50%',
+             margin: 'auto',
+            textAlign:'center',
              //display: 'inline-block',
             
              

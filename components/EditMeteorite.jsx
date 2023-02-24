@@ -12,8 +12,12 @@ const EditMeteorite = (props) => {
   const [description, setDescription] = useState(props.data.description);
   const [name, setName] = useState(props.data.name);
   const [visible, setVisible] = useState(props.data.visible);
+  const [type, setType] = useState(props.data.type);
+  const [clazz, setClazz] = useState(props.data.clazz);
+  const [clan, setClan] = useState(props.data.clan);
+  const [group, setGroup] = useState(props.data.group);
   const [nation, setNation] = useState(props.data.nation);
-  const [state, setState] = useState(props.data.state);
+  const [location, setLocation] = useState(props.data.location);
   const [picture, setPicture] = useState(props.data.picture);
   const [id, setId] = useState(props.data._id)
   const [latitude, setLatitude] = useState(props.data.coordinates._lat);
@@ -56,23 +60,29 @@ const querySnapshot = await addDoc(q, meteoriteData);
       description: description,
       name: name,
       nation: nation,
-      state: state,
+      location: location,
       picture: picture,
       coordinates: coordinates,
-      visible: visible
+      visible: visible,
+      type: type,
+      clazz : clazz,
+      clan: clan,
+      group: group
     });
+    
     })
+    
   })
     
-    
+  alert("successfully updated meteorite");
     
   };
 
     return(
         <form onSubmit={(e) => editMeteorite(e)} style={{
-             //width: '50%',
-             //margin: 'auto',
-            // textAlign:'center',
+             width: '50%',
+             margin: 'auto',
+             textAlign:'center',
              //display: 'inline-block',
             
              
@@ -129,20 +139,56 @@ const querySnapshot = await addDoc(q, meteoriteData);
                   onChange={(e) => setDescription(e.target.value)}
                   
                 />
-                {/*
+                {
                 <TextField
                   
                   fullWidth
                   id="desc"
                   type="desc"
-                  label="picture"
+                  label="type"
                   
                   margin="normal"
-                  value={picture}
-                  onChange={(e) => setPicture(e.target.value)}
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
                   
                 />
-          */}
+          }
+             <TextField
+                  
+                  fullWidth
+                  id="desc"
+                  type="desc"
+                  label="class"
+                  
+                  margin="normal"
+                  value={clazz}
+                  onChange={(e) => setClazz(e.target.value)}
+                  
+                />
+                <TextField
+                  
+                  fullWidth
+                  id="desc"
+                  type="desc"
+                  label="clan"
+                  
+                  margin="normal"
+                  value={clan}
+                  onChange={(e) => setClan(e.target.value)}
+                  
+                />
+                <TextField
+                  
+                  fullWidth
+                  id="desc"
+                  type="desc"
+                  label="group"
+                  
+                  margin="normal"
+                  value={group}
+                  onChange={(e) => setGroup(e.target.value)}
+                  
+                />
                 <label>Visible:  </label>
                  <select value={visible} onChange={(e) => setVisible(e.target.value)}>
                    <option value=""> </option>
@@ -158,11 +204,11 @@ const querySnapshot = await addDoc(q, meteoriteData);
                    <option value="Choctaw">Choctaw</option>
                    </select>
                    <br></br>
-                   <label>State:  </label>
-                 <select value={state} onChange={(e) => setState(e.target.value)}>
+                   <label>Location:  </label>
+                 <select value={location} onChange={(e) => setState(e.target.value)}>
                    <option value=""> </option>
-                   <option value="Oklahoma">Oklahoma</option>
-                   
+                   <option value="Oklahoma, USA">Oklahoma, USA</option>
+                   <option value="Texas, USA">Texas, USA</option>
                    </select>
                </div>
              </CardContent>

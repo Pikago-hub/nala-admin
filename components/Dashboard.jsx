@@ -27,8 +27,12 @@ import Modal from '@mui/material/Modal';
 import AddMeteorite from './AddMeteorite';
 import AddEducatorTool from './AddEducatorTool';
 import MeteoriteTable from './MeteoriteTable';
-import EditMeteorite from './EditMeteorite';
 import EditTool from './EditTool';
+import Dialog from '@mui/material';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 //import  TableComponent  from '../components'
 //import { GeoPoint } from "firebase/firestore";
 import { firestore, auth} from "../utils/firebase";
@@ -132,7 +136,15 @@ querySnapshot.forEach((doc) => {
 );
   setTools(newArray)
   };
-
+  const descriptionElementRef = React.useRef(null);
+  React.useEffect(() => {
+    if (open) {
+      const { current: descriptionElement } = descriptionElementRef;
+      if (descriptionElement !== null) {
+        descriptionElement.focus();
+      }
+    }
+  }, [open]);
     if(loading){
         return <div>Loading...</div>
     }
@@ -176,15 +188,23 @@ querySnapshot.forEach((doc) => {
   </Grid>
   
 </Grid>
-<Modal
+     <Modal
         open={ open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        //scroll="body"
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+        style={{position:'absolute',
+        //top:'10%',
+        //left:'10%',
+        overflowY:'auto',
+        height:'100%',
+        display:'block'}}
       >
-        <AddMeteorite />
          
-        
+        {<AddMeteorite />
+ }
+       
       </Modal>
       <Modal
         open={openEdu}
@@ -372,6 +392,12 @@ querySnapshot.forEach((doc) => {
         onClose={handleCloseEdit}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        style={{position:'absolute',
+        //top:'10%',
+        //left:'10%',
+        overflowY:'auto',
+        height:'100%',
+        display:'block'}}
       >
         <EditTool data={data1}/>
       </Modal>
