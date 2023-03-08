@@ -291,8 +291,8 @@ querySnapshot.forEach((doc) => {
       <div>
         ______________
       </div>
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
+      <Paper sx={{ width: '95%', overflow: 'hidden' , margin:'auto'}}>
+        <TableContainer sx={{ maxHeight: 580}}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -321,11 +321,7 @@ querySnapshot.forEach((doc) => {
                     
                    
                   </TableCell>
-                  <TableCell>
-                    Picture
-                    
-                   
-                  </TableCell>
+                  
                   <TableCell>
                     Visible
                     
@@ -354,7 +350,7 @@ querySnapshot.forEach((doc) => {
                       <TableCell>{row.description}</TableCell>
                       <TableCell>{row.link}</TableCell>
                       <TableCell>{row.standard}</TableCell>
-                      <TableCell>{row.picture}</TableCell>
+                      
                       <TableCell>{row.visible}</TableCell>
                       <TableCell>
                       <div><Button onClick={()=>{handleEdit(row)}}>Edit</Button> <Button onClick={()=> {areYouSure(row)}}>Delete</Button></div>

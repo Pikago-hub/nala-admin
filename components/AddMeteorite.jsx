@@ -107,7 +107,7 @@ const querySnapshot = await addDoc(q, meteoriteData);
      
        
       alert('successfully added a new meteorite')
-                  
+      clear()           
    }
      );
 
@@ -116,7 +116,16 @@ const querySnapshot = await addDoc(q, meteoriteData);
   
   };
   
- 
+  const clear = () =>{
+    setDescription("");
+    setClan("");
+    setClazz("");
+    setGroup("");
+    setLatitude("");
+    setLongitude("");
+    setLocation("");
+    setName("");
+  }
 
 
     return(

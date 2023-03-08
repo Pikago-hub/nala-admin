@@ -121,8 +121,8 @@ function MeteoriteTable(props) {
         ______________
       </div>
       <Card>
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
+      <Paper sx={{ width: '95%', overflow: 'hidden', margin:'auto' }}>
+        <TableContainer sx={{ maxHeight: 580 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -172,11 +172,7 @@ function MeteoriteTable(props) {
                     
                    
                   </TableCell>
-                  <TableCell>
-                    Picture
-                    
-                   
-                  </TableCell>
+                  
                   <TableCell>
                     Visible
                     
@@ -211,7 +207,7 @@ function MeteoriteTable(props) {
         <TableCell>{row.clazz}</TableCell>
         <TableCell>{row.clan}</TableCell>
         <TableCell>{row.group}</TableCell>
-        <TableCell>{row.picture}</TableCell>
+
         <TableCell>{row.visible}</TableCell>
         <TableCell>
         <div><Button onClick={() => {handleOpenEdit(row)}}>Edit</Button> <Button onClick={()=> {areYouSure(row)}}>Delete</Button></div>

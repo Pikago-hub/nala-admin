@@ -87,6 +87,7 @@ const AddEducatorTool = () => {
         });
 
         alert('successfully added a new instructor tool')
+        clear()
                   
       }
         );
@@ -99,6 +100,14 @@ const AddEducatorTool = () => {
       
       
     };
+    const clear = () =>{
+      setDescription("");
+      setTitle("");
+      setLink("");
+      setCategory("");
+      setStandard("");
+      
+    }
   
 
     return(
