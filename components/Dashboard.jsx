@@ -28,6 +28,7 @@ import AddMeteorite from './AddMeteorite';
 import AddEducatorTool from './AddEducatorTool';
 import MeteoriteTable from './MeteoriteTable';
 import EditTool from './EditTool';
+import AddLinkIcon from '@mui/icons-material/AddLink';
 import Dialog from '@mui/material';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -67,6 +68,8 @@ import {
     const [openEdu, setOpenEdu] = React.useState(false);
     const [meteorites, setMeteorites] = useState([])
     const [tools, setTools] = useState([])
+    const [reload, setReload] = React.useState(false);
+
     const handleOpen = () => {
       if(isPicked === 'meteorite'){
         setOpen(true);}
@@ -96,18 +99,18 @@ import {
   
   useEffect(() => {
     const getData = () => {
-       getMeteorites()
+       //getMeteorites()
        getTools()
 
     };
 
     getData();
-  }, []);
+  }, [reload]);
   
   
   
   
-  
+  /*
   const getMeteorites = async () => {
     const db = firestore
     const q = query(collection(db, "Meteorites"));
@@ -122,6 +125,7 @@ querySnapshot.forEach((doc) => {
 );
   setMeteorites(newArray)
   };
+  */
   const getTools = async () => {
     const db = firestore
     const q = query(collection(db, "Educational Resources"));
@@ -219,7 +223,7 @@ querySnapshot.forEach((doc) => {
         
        
         
-        {isPicked === 'meteorite' && <MeteoriteTable data={meteorites} />}
+        {isPicked === 'meteorite' && <MeteoriteTable  reload={reload} setReload={setReload} />}
         { isPicked === 'tool' && <EducatorToolTable data={tools}/> }
         <Button variant="outlined" onClick={logout}>Sign Out</Button>
        
@@ -353,7 +357,9 @@ querySnapshot.forEach((doc) => {
                       
                       <TableCell>{row.visible}</TableCell>
                       <TableCell>
-                      <div><Button onClick={()=>{handleEdit(row)}}>Edit</Button> <Button onClick={()=> {areYouSure(row)}}>Delete</Button></div>
+                      <div><Button onClick={()=>{handleEdit(row)}}>Edit</Button> <Button onClick={()=> {areYouSure(row)}}>Delete</Button>
+                      <Button onClick={()=> console.log('ere')}><AddLinkIcon></AddLinkIcon></Button>
+                      </div>
                       </TableCell>
                     </TableRow>
                   

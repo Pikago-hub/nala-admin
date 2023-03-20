@@ -80,14 +80,15 @@ const AddEducatorTool = () => {
                               picture
                               
                           });
+                          alert('successfully added a new instructor tool')
+                            clear()
                           }catch(e){
                             alert(e)
                           }
                             
         });
 
-        alert('successfully added a new instructor tool')
-        clear()
+      
                   
       }
         );

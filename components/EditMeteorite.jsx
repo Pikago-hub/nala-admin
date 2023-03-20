@@ -42,7 +42,6 @@ const querySnapshot = await addDoc(q, meteoriteData);
     
     e.preventDefault();
     //console.log(new GeoPoint(parseInt(latitude), parseInt(longitude)))
-    const coordinates = new GeoPoint(parseInt(latitude), parseInt(longitude))
     //let _id = uuid().toString();
     const db = firestore
       
@@ -52,6 +51,7 @@ const querySnapshot = await addDoc(q, meteoriteData);
     
 
     const q = query(citiesRef, where("_id", "==", data._id));
+    try{
     const cool = onSnapshot(q, (querySnapshot) => {
     querySnapshot.forEach((doc) =>{
       const coordinates = new GeoPoint(parseInt(latitude), parseInt(longitude))
@@ -70,11 +70,21 @@ const querySnapshot = await addDoc(q, meteoriteData);
       group: group
     });
     
+    
     })
     
-  })
     
+  })
   alert("successfully updated meteorite");
+}catch(e){
+  alert("something went wrong, try again")
+}
+props.setReload(!props.reload)
+//handleClose()
+//window.reload()
+  
+  
+  
     
   };
 
@@ -205,7 +215,7 @@ const querySnapshot = await addDoc(q, meteoriteData);
                    </select>
                    <br></br>
                    <label>Location:  </label>
-                 <select value={location} onChange={(e) => setState(e.target.value)}>
+                 <select value={location} onChange={(e) => setLocation(e.target.value)}>
                    <option value=""> </option>
                    <option value="Oklahoma, USA">Oklahoma, USA</option>
                    <option value="Texas, USA">Texas, USA</option>

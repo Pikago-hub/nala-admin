@@ -17,18 +17,12 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+
 import Modal from '@mui/material/Modal';
 import EditMeteorite from './EditMeteorite';
-import EditTool from './EditTool'
-import AddEducatorTool from './AddEducatorTool';
-import AddMeteorite from './AddMeteorite'
-import Typography from '@mui/material';
+
+import AddLinkIcon from '@mui/icons-material/AddLink';
+
 import { firestore, auth} from "../utils/firebase";
 import {
   collection, deleteDoc, doc, DocumentData, getDocs, limit, query, QueryDocumentSnapshot, updateDoc, where, getDoc, onSnapshot}
@@ -66,6 +60,8 @@ function MeteoriteTable(props) {
     const [open, setOpen] = React.useState(false);
     const [openEdit, setOpenEdit] = React.useState(false);
     const [data1, setData1] = React.useState({});
+    const [meteorites, setMeteorites] = React.useState([]);
+    const [reload, setReload] = React.useState(false);
     const handleOpen = () => {
      
         setOpen(true);
@@ -101,20 +97,47 @@ function MeteoriteTable(props) {
     querySnapshot.forEach((doc) =>{
      //doc.data
       deleteDoc(doc.ref);
+      alert('successfully deleted a meteorite')
+      handleClose()
+      setReload(!reload)
     })
   }
   
   )
-  alert('successfully deleted a meteorite')
-  handleClose()
+  
+ 
     }
+    useEffect(() => {
+      const getData = () => {
+         getMeteorites()
+         //getTools()
+  
+      };
+  
+      getData();
+    }, [reload]);
+    const getMeteorites = async () => {
+      const db = firestore
+      const q = query(collection(db, "Meteorites"));
+  const querySnapshot = await getDocs(q);
+  console.log(querySnapshot)
+  let newArray = []
+  querySnapshot.forEach((doc) => {
+    let newData = doc.data()
+   
+    newArray.push(newData)
+  }
+  
+  );
+    setMeteorites(newArray)
+    };
     const areYouSure = (data) => {
       handleOpen()
       setData1(data)
     }
-    const data = props.data
+    //const data = props.data
 
-    console.log('jj',data)
+    console.log('dsds',meteorites)
     return (
       <div>
       <div>
@@ -188,7 +211,7 @@ function MeteoriteTable(props) {
             </TableHead>
             <TableBody>
               
-                {data.map(
+                {meteorites.map(
     (row, index) => (
       <TableRow
         id={row._id}
@@ -210,7 +233,9 @@ function MeteoriteTable(props) {
 
         <TableCell>{row.visible}</TableCell>
         <TableCell>
-        <div><Button onClick={() => {handleOpenEdit(row)}}>Edit</Button> <Button onClick={()=> {areYouSure(row)}}>Delete</Button></div>
+        <div><Button onClick={() => {handleOpenEdit(row)}}>Edit</Button> <Button onClick={()=> {areYouSure(row)}}>Delete</Button>
+        <Button onClick={()=> console.log('ere')}><AddLinkIcon></AddLinkIcon></Button>
+        </div>
         </TableCell>
       </TableRow>
     )
@@ -254,7 +279,7 @@ function MeteoriteTable(props) {
         display:'block'}}
       >
         
-        <EditMeteorite data={data1}/>
+        <EditMeteorite data={data1} setReload={setReload} reload={reload}/>
         
          
         
@@ -263,7 +288,7 @@ function MeteoriteTable(props) {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={data.length}
+          count={meteorites.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
