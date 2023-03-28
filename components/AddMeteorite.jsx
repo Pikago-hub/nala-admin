@@ -49,11 +49,12 @@ const querySnapshot = await addDoc(q, meteoriteData);
 
   const addNewMeteorite = (e) => {
 
-    const coordinates = new GeoPoint(parseInt(latitude), parseInt(longitude))
+    const coordinates = new GeoPoint(parseFloat(latitude), parseFloat(longitude))
     let _id = uuid().toString();
     //let picture = "";
-     if (!file) {
+     if (file === "") {
                   alert("Please upload an image first!");
+      return;
               }
       
        

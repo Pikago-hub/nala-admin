@@ -54,7 +54,8 @@ const querySnapshot = await addDoc(q, meteoriteData);
     try{
     const cool = onSnapshot(q, (querySnapshot) => {
     querySnapshot.forEach((doc) =>{
-      const coordinates = new GeoPoint(parseInt(latitude), parseInt(longitude))
+      //const coordinates = new GeoPoint(parseInt(latitude), parseInt(longitude))
+      const coordinates = new GeoPoint(parseFloat(latitude), parseFloat(longitude))
      //doc.data
       updateDoc(doc.ref, {
       description: description,

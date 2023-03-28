@@ -28,6 +28,7 @@ import AddMeteorite from './AddMeteorite';
 import AddEducatorTool from './AddEducatorTool';
 import MeteoriteTable from './MeteoriteTable';
 import EditTool from './EditTool';
+import EditToolLink from './EditToolLink'
 import AddLinkIcon from '@mui/icons-material/AddLink';
 import Dialog from '@mui/material';
 import DialogActions from '@mui/material/DialogActions';
@@ -100,7 +101,7 @@ import {
   useEffect(() => {
     const getData = () => {
        //getMeteorites()
-       getTools()
+       //getTools()
 
     };
 
@@ -224,7 +225,7 @@ querySnapshot.forEach((doc) => {
        
         
         {isPicked === 'meteorite' && <MeteoriteTable  reload={reload} setReload={setReload} />}
-        { isPicked === 'tool' && <EducatorToolTable data={tools}/> }
+        { isPicked === 'tool' && <EducatorToolTable reload={reload} setReload={setReload} /> }
         <Button variant="outlined" onClick={logout}>Sign Out</Button>
        
       </div>
@@ -246,18 +247,48 @@ querySnapshot.forEach((doc) => {
     const [open, setOpen] = React.useState(false);
     const [openEdit, setOpenEdit] = React.useState(false);
     const [data1, setData1] = React.useState({});
-    const data  = props.data
-    console.log('sdsdsd', data)
+    const [tools, setTools] = React.useState([]);
+    const [reload, setReload] = React.useState(false);
+    const [openEditLink, setOpenEditLink] = React.useState(false);
+    //const data  = props.data
+    //console.log('sdsdsd', data)
+    useEffect(() => {
+      const getData = () => {
+         //getMeteorites()
+         getTools()
+  
+      };
+  
+      getData();
+    }, [reload]);
+    const getTools = async () => {
+      const db = firestore
+      const q = query(collection(db, "Educational Resources"));
+  const querySnapshot = await getDocs(q);
+  console.log(querySnapshot)
+  let newArray = []
+  querySnapshot.forEach((doc) => {
+    let newData = doc.data() 
+    newArray.push(newData)
+  }
+  
+  );
+    setTools(newArray)
+    };
     const handleOpen = () => {
      
       setOpen(true);
     }
-     
   const handleClose = () => setOpen(false);
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
-  
+    const handleOpenEditLink = (data) => {
+     
+      setOpenEditLink(true)
+      setData1(data)
+    }
+    const handleCloseEditLink = () => setOpenEditLink(false);
     const handleChangeRowsPerPage = (event) => {
       setRowsPerPage(+event.target.value);
       setPage(0);
@@ -284,10 +315,12 @@ querySnapshot.forEach((doc) => {
     querySnapshot.forEach((doc) =>{
      //doc.data
       deleteDoc(doc.ref);
+      alert('successfully deleted an instructor tool')
+      handleClose()
+      setReload(!reload)
     })
   })
-  alert('successfully deleted a meteorite')
-  handleClose()
+  
 }
   
     return (
@@ -339,7 +372,7 @@ querySnapshot.forEach((doc) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map((row, index) => (
+              {tools.map((row, index) => (
                   
                     <TableRow
                       id={row._id}
@@ -358,7 +391,7 @@ querySnapshot.forEach((doc) => {
                       <TableCell>{row.visible}</TableCell>
                       <TableCell>
                       <div><Button onClick={()=>{handleEdit(row)}}>Edit</Button> <Button onClick={()=> {areYouSure(row)}}>Delete</Button>
-                      <Button onClick={()=> console.log('ere')}><AddLinkIcon></AddLinkIcon></Button>
+                      <Button onClick={()=> {handleOpenEditLink(row)}}><AddLinkIcon></AddLinkIcon></Button>
                       </div>
                       </TableCell>
                     </TableRow>
@@ -401,12 +434,26 @@ querySnapshot.forEach((doc) => {
         height:'100%',
         display:'block'}}
       >
-        <EditTool data={data1}/>
+        <EditTool data={data1} reload={reload} setReload={setReload}/>
+      </Modal>
+      <Modal
+        open={ openEditLink }
+        onClose={handleCloseEditLink}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        style={{position:'absolute',
+        //top:'10%',
+        //left:'10%',
+        overflowY:'auto',
+        height:'100%',
+        display:'block'}}
+      >
+        <EditToolLink data={data1} reload={reload} setReload={setReload}/>
       </Modal>
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={data.length}
+          count={tools.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

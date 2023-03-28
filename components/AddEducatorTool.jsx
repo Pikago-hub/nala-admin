@@ -5,8 +5,9 @@
 import { Button, TextField, Card, CardContent, CardActions, CardHeader, Alert } from '@mui/material'
 import { useState } from 'react';
 import {storage }from '../utils/firebase';
-import { collection, addDoc, doc, query } from "firebase/firestore"; 
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { collection, addDoc, doc, query, where, onSnapshot, updateDoc } from "firebase/firestore"; 
+
 import {firestore }from '../utils/firebase'
 import { v4 as uuid } from 'uuid';
 
@@ -17,11 +18,17 @@ const AddEducatorTool = () => {
   const [link, setLink] = useState("");
   const [category, setCategory] = useState("")
   const [standard, setStandard] = useState("")
+  const [pdf, setPdf] = useState("")
+ 
   //const [picture, setPicture] = useState("")
   const [file, setFile] = useState("");
+  const [filePdf, setFilePdf] = useState("");
   const [percent, setPercent] = useState(0);
   function handleChange(event) {
     setFile(event.target.files[0]);
+}
+function handleChangePdf(event) {
+  setFilePdf(event.target.files[0]);
 }
   const addTool = async (data) => {
     
@@ -37,16 +44,19 @@ const AddEducatorTool = () => {
   };
     const addNewTool = (e) => {
       
-      let _id = uuid().toString();
-
+      const _id = uuid().toString();
+      let picture2 = "cool";
+      let pdf2 = 'cool';
        if (!file) {
                     alert("Please upload an image first!");
+        return;
                 }
         const storageRef = ref(storage, `/EducationalDocuments/${file.name}` )
+        const storageRef2 = ref(storage, `/EducationalDocuments/${filePdf.name}` )
                 // progress can be paused and resumed. It also exposes progress updates.
                 // Receives the storage reference and the file to upload.
                 const uploadTask = uploadBytesResumable(storageRef, file);
-         
+                const uploadTask2 = uploadBytesResumable(storageRef2, filePdf);
                 uploadTask.on(
                     "state_changed",
                     (snapshot) => {
@@ -63,36 +73,99 @@ const AddEducatorTool = () => {
                            // download url
                            getDownloadURL(uploadTask.snapshot.ref).then((url) => {
                             const picture = "" + url
+                            try{
+                              addTool({
+                                _id,
+                                title,
+                                description,
+                                link,
+                                category,
+                                standard,
+                                visible,
+                                picture,
+                                pdf
+                                
+                            });
                             
-                            console.log('sdsddf', picture)
+                            //alert('successfully added a new instructor tool')
+                             // clear()
+                            }catch(e){
+                              alert(e)
+                            }
+                    
+                            
+                            //picture2 = "" + url
+                            //console.log('sdsddf', picture)
                             //pictureHelper(pictureUrl)
                             //setUrl(pictureUrl)
                            // console.log(url)
-                           try{
-                            addTool({
-                              _id,
-                              title,
-                              description,
-                              link,
-                              category,
-                              standard,
-                              visible,
-                              picture
-                              
-                          });
-                          alert('successfully added a new instructor tool')
-                            clear()
-                          }catch(e){
-                            alert(e)
-                          }
+                           
                             
         });
 
-      
+       
                   
       }
         );
-
+        uploadTask2.on(
+                      "state_changed",
+                      (snapshot) => {
+                          const percent = Math.round(
+                              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                          );
+           
+                          // update progress
+                          setPercent(percent);
+          //console.log('sadsd', percent)
+                      },
+                      (err) => console.log(err),
+                         () => {
+                             // download url
+                             getDownloadURL(uploadTask2.snapshot.ref).then((url) => {
+                              //const picture = "" + url
+                              const x = "" + url
+                              console.log('sdsdsfdsfssdfdsx',x)
+                              const db = firestore
+                              const citiesRef = collection(db, "Educational Resources");
+                              const q = query(citiesRef, where("_id", "==", _id));
+                              const cool = onSnapshot(q, (querySnapshot) => {
+                                querySnapshot.forEach((doc) =>{
+                                  //const coordinates = new GeoPoint(parseInt(latitude), parseInt(longitude))
+                                  console.log('here')
+                                 //doc.data
+                                  updateDoc(doc.ref, {
+                                    //description: description,
+                                    //title: title,
+                                    //link: link,
+                                    //category: category,
+                                    //standard: standard,
+                                   // visible: visible,
+                                    //picture: picture,
+                                    pdf:x
+                                });
+                                
+                                
+                                })
+                                
+                                alert('successfully added a new instructor tool')
+                                clear() 
+                              })
+                              //setPdf(x)
+                              //pdf2 = "" + url
+                              //console.log('sdsddf', picture)
+                              //pictureHelper(pictureUrl)
+                              //setUrl(pictureUrl)
+                             // console.log(url)
+                             
+                              
+          });
+  
+         
+                    
+        }
+          );
+          //console.log('sdsd', picture, 'sds', pdf)
+        
 
 
 
@@ -175,7 +248,12 @@ const AddEducatorTool = () => {
                 />
           */}
           <br></br>
+          <label>Picture: </label>
                 <input type="file" onChange={handleChange} accept="/image/*" />
+                <br></br>
+                <br></br>
+                <label>Pdf: </label>
+                <input type="file" onChange={handleChangePdf} accept="/pdf/*" />
                 <br></br>
                 <label>Visible: </label>
                  <select value={visible} onChange={(e) => setVisible(e.target.value)}>

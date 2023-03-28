@@ -16,6 +16,7 @@ const EditTool = (props) => {
   const [category, setCategory] = useState(props.data.category);
   const [standard, setStandard] = useState(props.data.standard);
   const [picture, setPicture] = useState(props.data.picture);
+  const [pdf, setPdf] = useState(props.data.pdf);
   const [id, setId] = useState(props.data._id)
 
   const data = props.data
@@ -46,7 +47,7 @@ const querySnapshot = await addDoc(q, meteoriteData);
      
     const citiesRef = collection(db, "Educational Resources");
     
-
+  try{
     const q = query(citiesRef, where("_id", "==", data._id));
     const cool = onSnapshot(q, (querySnapshot) => {
     querySnapshot.forEach((doc) =>{
@@ -58,11 +59,19 @@ const querySnapshot = await addDoc(q, meteoriteData);
       category: category,
       standard: standard,
       visible: visible,
-      picture: picture
+      //picture: picture,
+      //pdf:pdf
     });
+
     })
+
   })
   alert("successfully updated educational tool");
+}catch(e){
+  alert("something went wrong");
+}
+props.setReload(!props.reload)
+  
     
     
   };

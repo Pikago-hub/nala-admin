@@ -20,7 +20,7 @@ import { styled } from '@mui/material/styles';
 
 import Modal from '@mui/material/Modal';
 import EditMeteorite from './EditMeteorite';
-
+import EditMeteoriteLink from './EditMeteoriteLink';
 import AddLinkIcon from '@mui/icons-material/AddLink';
 
 import { firestore, auth} from "../utils/firebase";
@@ -59,6 +59,7 @@ function MeteoriteTable(props) {
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [open, setOpen] = React.useState(false);
     const [openEdit, setOpenEdit] = React.useState(false);
+    const [openEditLink, setOpenEditLink] = React.useState(false);
     const [data1, setData1] = React.useState({});
     const [meteorites, setMeteorites] = React.useState([]);
     const [reload, setReload] = React.useState(false);
@@ -73,7 +74,12 @@ function MeteoriteTable(props) {
       setOpenEdit(true)
       setData1(data)
     }
+    const handleOpenEditLink = (data) => {
      
+      setOpenEditLink(true)
+      setData1(data)
+    }
+    const handleCloseEditLink = () => setOpenEditLink(false);
   const handleCloseEdit = () => setOpenEdit(false);
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
@@ -234,7 +240,7 @@ function MeteoriteTable(props) {
         <TableCell>{row.visible}</TableCell>
         <TableCell>
         <div><Button onClick={() => {handleOpenEdit(row)}}>Edit</Button> <Button onClick={()=> {areYouSure(row)}}>Delete</Button>
-        <Button onClick={()=> console.log('ere')}><AddLinkIcon></AddLinkIcon></Button>
+        <Button onClick={()=> {handleOpenEditLink(row)}}><AddLinkIcon></AddLinkIcon></Button>
         </div>
         </TableCell>
       </TableRow>
@@ -280,6 +286,26 @@ function MeteoriteTable(props) {
       >
         
         <EditMeteorite data={data1} setReload={setReload} reload={reload}/>
+        
+         
+        
+      </Modal>
+    }
+    {
+      <Modal
+        open={ openEditLink}
+        onClose={handleCloseEditLink}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        style={{position:'absolute',
+        //top:'10%',
+        //left:'10%',
+        overflowY:'auto',
+        height:'100%',
+        display:'block'}}
+      >
+        
+        <EditMeteoriteLink data={data1} setReload={setReload} reload={reload}/>
         
          
         
