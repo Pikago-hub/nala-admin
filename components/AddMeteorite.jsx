@@ -56,7 +56,10 @@ const querySnapshot = await addDoc(q, meteoriteData);
                   alert("Please upload an image first!");
       return;
               }
-      
+      if (location === "") {
+                    alert("Please pick Oklahoma");
+        return;
+                }
        
               //const storageRef = ref(storage, `/files/${file.name}`);
          const storageRef = ref(storage, `/Meteorites/${file.name}` )

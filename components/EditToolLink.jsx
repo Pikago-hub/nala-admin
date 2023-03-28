@@ -166,7 +166,7 @@ function handleChangePdf(event) {
         );
         
     
-//props.setReload(!props.reload)
+props.setReload(!props.reload)
 //handleClose()
 //window.reload()
   

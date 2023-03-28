@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 //import {auth} from '../../firebase/initFirebase'
 //import {useAuthState} from 'react-firebase-hooks/auth'
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Button, TextField, Card, CardContent, CardActions, CardHeader,  } from '@mui/material'
 //import * as React from 'react';
 import Paper from '@mui/material/Paper';
@@ -17,7 +17,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { styled } from '@mui/material/styles';
-
+import Search from './Search';
 import Modal from '@mui/material/Modal';
 import EditMeteorite from './EditMeteorite';
 import EditMeteoriteLink from './EditMeteoriteLink';
@@ -61,8 +61,9 @@ function MeteoriteTable(props) {
     const [openEdit, setOpenEdit] = React.useState(false);
     const [openEditLink, setOpenEditLink] = React.useState(false);
     const [data1, setData1] = React.useState({});
-    const [meteorites, setMeteorites] = React.useState([]);
+    const [meteorites, setMeteorites] = useState([]);
     const [reload, setReload] = React.useState(false);
+    const [search, setSearch] = useState("#");
     const handleOpen = () => {
      
         setOpen(true);
@@ -111,17 +112,19 @@ function MeteoriteTable(props) {
   
   )
   
- 
-    }
-    useEffect(() => {
-      const getData = () => {
-         getMeteorites()
-         //getTools()
   
-      };
+    }
+    const getData = () => {
+      getMeteorites()
+      //getTools()
+  
+   };
+    useEffect(() => {
+      
   
       getData();
     }, [reload]);
+    let compute = []
     const getMeteorites = async () => {
       const db = firestore
       const q = query(collection(db, "Meteorites"));
@@ -136,18 +139,45 @@ function MeteoriteTable(props) {
   
   );
     setMeteorites(newArray)
+    compute = newArray
     };
     const areYouSure = (data) => {
       handleOpen()
       setData1(data)
     }
     //const data = props.data
-
+   
+    
+     const  meteoriteData = useMemo(() => {
+        //let computedOrders = meteorites;
+        let computedOrders = compute;
+        computedOrders = computedOrders.filter((post) => {
+          if (search === "#") {
+            return post;
+          } else if (post.name.toLowerCase().includes(search.toString().toLowerCase())) {
+            return post;
+          }
+        });
+    
+        
+      }, [meteorites, search]);
+   
+    
     console.log('dsds',meteorites)
     return (
       <div>
       <div>
         ______________
+        <br></br>
+        <TextField
+            type="text"
+            className="form-control"
+            style={{ width: "240px" }}
+            placeholder="Search "
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+        />
+        <br></br>
       </div>
       <Card>
       <Paper sx={{ width: '95%', overflow: 'hidden', margin:'auto' }}>
