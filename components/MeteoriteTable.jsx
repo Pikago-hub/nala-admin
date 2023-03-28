@@ -63,7 +63,7 @@ function MeteoriteTable(props) {
     const [data1, setData1] = React.useState({});
     const [meteorites, setMeteorites] = useState([]);
     const [reload, setReload] = React.useState(false);
-    const [search, setSearch] = useState("#");
+    const [search, setSearch] = useState("");
     const handleOpen = () => {
      
         setOpen(true);
@@ -147,7 +147,17 @@ function MeteoriteTable(props) {
     }
     //const data = props.data
    
-    
+    const handleSearch = () =>{
+      let computedOrders = meteorites;
+      computedOrders = computedOrders.filter((post) => {
+        if (search === "") {
+          return post;
+        } else if (post.name.toLowerCase().includes(search.toString().toLowerCase())) {
+          return post;
+        }
+      });
+      setMeteorites(computedOrders)
+    }
      const  meteoriteData = useMemo(() => {
         //let computedOrders = meteorites;
         let computedOrders = compute;
@@ -177,6 +187,7 @@ function MeteoriteTable(props) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
         />
+        <Button onClick={()=> {handleSearch()}}>Search</Button>
         <br></br>
       </div>
       <Card>

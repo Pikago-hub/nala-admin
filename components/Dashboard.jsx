@@ -250,6 +250,7 @@ querySnapshot.forEach((doc) => {
     const [tools, setTools] = React.useState([]);
     const [reload, setReload] = React.useState(false);
     const [openEditLink, setOpenEditLink] = React.useState(false);
+    const [search, setSearch] = useState("");
     //const data  = props.data
     //console.log('sdsdsd', data)
     useEffect(() => {
@@ -322,11 +323,33 @@ querySnapshot.forEach((doc) => {
   })
   
 }
+const handleSearch = () =>{
+  let computedOrders = tools;
+  computedOrders = computedOrders.filter((post) => {
+    if (search === "") {
+      return post;
+    } else if (post.title.toLowerCase().includes(search.toString().toLowerCase())) {
+      return post;
+    }
+  });
+  setTools(computedOrders)
+}
   
     return (
       <div>
       <div>
-        ______________
+      ______________
+        <br></br>
+        <TextField
+            type="text"
+            className="form-control"
+            style={{ width: "240px" }}
+            placeholder="Search "
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+        />
+        <Button onClick={()=> {handleSearch()}}>Search</Button>
+        <br></br>
       </div>
       <Paper sx={{ width: '95%', overflow: 'hidden' , margin:'auto'}}>
         <TableContainer sx={{ maxHeight: 580}}>
