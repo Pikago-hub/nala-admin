@@ -149,6 +149,10 @@ function MeteoriteTable(props) {
    
     const handleSearch = () =>{
       let computedOrders = meteorites;
+      if(search === ""){
+        getMeteorites()
+        return;
+      }
       computedOrders = computedOrders.filter((post) => {
         if (search === "") {
           return post;

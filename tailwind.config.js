@@ -10,7 +10,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'primary-black': '#000000',//#1A232E #c5c6d0
+        'primary-black': '#ffffff',//#1A232E #c5c6d0
         'secondary-white': '#fbfaf5',
       },
       transitionTimingFunction: {

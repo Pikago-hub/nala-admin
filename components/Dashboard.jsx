@@ -159,7 +159,7 @@ querySnapshot.forEach((doc) => {
         router.push('/')
         return <div>Please sign in to continue </div>
     }
-    
+    //[#a599b5]
     return (
         <div className="bg-white" style={{
             width: '100%',
@@ -171,8 +171,8 @@ querySnapshot.forEach((doc) => {
             <div>
               ______________
             </div>
-            <Grid container spacing={2}>
-  <Grid item xs={6} md={8}>
+            
+ 
   <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Pick One</InputLabel>
         <Select
@@ -187,12 +187,12 @@ querySnapshot.forEach((doc) => {
           
         </Select>
       </FormControl>
-  </Grid>
-  <Grid item xs={6} md={4}>
+
+ 
     <Button onClick={handleOpen}>Add a {name}</Button>
-  </Grid>
   
-</Grid>
+  
+
      <Modal
         open={ open}
         onClose={handleClose}
@@ -325,6 +325,10 @@ querySnapshot.forEach((doc) => {
 }
 const handleSearch = () =>{
   let computedOrders = tools;
+  if(search === ""){
+    getTools()
+    return;
+  }
   computedOrders = computedOrders.filter((post) => {
     if (search === "") {
       return post;
