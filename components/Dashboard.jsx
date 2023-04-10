@@ -168,12 +168,10 @@ querySnapshot.forEach((doc) => {
             textAlign :'center',
            
           }}>
-            <div>
-              ______________
-            </div>
             
- 
-  <FormControl fullWidth>
+            
+ <div className='p-5'>
+  <FormControl fullWidth >
         <InputLabel id="demo-simple-select-label">Pick One</InputLabel>
         <Select
           labelId="demo-simple-select-label"
@@ -187,11 +185,11 @@ querySnapshot.forEach((doc) => {
           
         </Select>
       </FormControl>
-
+     
  
-    <Button onClick={handleOpen}>Add a {name}</Button>
+    <Button onClick={handleOpen}>Add a(n) {name}</Button>
   
-  
+    </div>
 
      <Modal
         open={ open}
@@ -199,12 +197,12 @@ querySnapshot.forEach((doc) => {
         //scroll="body"
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
-        style={{position:'absolute',
-        //top:'10%',
+        style={{
+       // top:'10%',
         //left:'10%',
         overflowY:'auto',
         height:'100%',
-        display:'block'}}
+        }}
       >
          
         {<AddMeteorite />
@@ -419,6 +417,7 @@ const handleSearch = () =>{
                       <TableCell>
                       <div><Button onClick={()=>{handleEdit(row)}}>Edit</Button> <Button onClick={()=> {areYouSure(row)}}>Delete</Button>
                       <Button onClick={()=> {handleOpenEditLink(row)}}><AddLinkIcon></AddLinkIcon></Button>
+                      <div>{(row.picture !== "https://firebasestorage.googleapis.com/v0/b/nativelandnativesky.appspot.com/o/EducationalDocuments%2Fundefined?alt=media&token=a5f461d3-371a-4b95-9c8a-6d1316fa8ad0") ? "" : "undefined picture"}</div>
                       </div>
                       </TableCell>
                     </TableRow>
@@ -455,7 +454,7 @@ const handleSearch = () =>{
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         style={{position:'absolute',
-        //top:'10%',
+        top:'25%',
         //left:'10%',
         overflowY:'auto',
         height:'100%',
@@ -469,11 +468,12 @@ const handleSearch = () =>{
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         style={{position:'absolute',
-        //top:'10%',
+        top:'25%',
         //left:'10%',
         overflowY:'auto',
         height:'100%',
-        display:'block'}}
+        //display:'block'
+      }}
       >
         <EditToolLink data={data1} reload={reload} setReload={setReload}/>
       </Modal>

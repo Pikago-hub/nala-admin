@@ -281,13 +281,13 @@ function MeteoriteTable(props) {
         <TableCell>{row.clazz}</TableCell>
         <TableCell>{row.clan}</TableCell>
         <TableCell>{row.group}</TableCell>
-
+        
         <TableCell>{row.visible}</TableCell>
         <TableCell>
         <div><Button onClick={() => {handleOpenEdit(row)}}>Edit</Button> <Button onClick={()=> {areYouSure(row)}}>Delete</Button>
-        <Button onClick={()=> {handleOpenEditLink(row)}}><AddLinkIcon></AddLinkIcon></Button>
+        <Button onClick={()=> {handleOpenEditLink(row)}}><AddLinkIcon></AddLinkIcon></Button> 
         </div>
-        </TableCell>
+        </TableCell> 
       </TableRow>
     )
   )}
@@ -323,7 +323,7 @@ function MeteoriteTable(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         style={{position:'absolute',
-        //top:'10%',
+        top:'25%',
         //left:'10%',
         overflowY:'auto',
         height:'100%',
@@ -343,11 +343,12 @@ function MeteoriteTable(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         style={{position:'absolute',
-        //top:'10%',
-        //left:'10%',
+        top:'25%',
+        left:'0%',
         overflowY:'auto',
         height:'100%',
-        display:'block'}}
+        //display:'block'
+      }}
       >
         
         <EditMeteoriteLink data={data1} setReload={setReload} reload={reload}/>

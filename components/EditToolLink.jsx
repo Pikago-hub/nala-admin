@@ -47,8 +47,8 @@ function handleChangePdf(event) {
   const editMeteorite = async (e) => {
     
     e.preventDefault();
-    if (filePdf === "" ) {
-                    alert("Please upload pdf");
+    if (filePdf === "" && file === "" ) {
+                    alert("Please upload something");
         return;
                 }
         const db = firestore
@@ -59,12 +59,10 @@ function handleChangePdf(event) {
     
 
     const q = query(citiesRef, where("_id", "==", data._id));
-    const storageRef = ref(storage, `/EducationalDocuments/${file.name}` )
+    
+    if(filePdf !== ""){
         const storageRef2 = ref(storage, `/EducationalDocuments/${filePdf.name}` )
-                // progress can be paused and resumed. It also exposes progress updates.
-                // Receives the storage reference and the file to upload.
-                const uploadTask = uploadBytesResumable(storageRef, file);
-                const uploadTask2 = uploadBytesResumable(storageRef2, filePdf);
+        const uploadTask2 = uploadBytesResumable(storageRef2, filePdf); 
         uploadTask2.on(
                         "state_changed",
                         (snapshot) => {
@@ -99,80 +97,65 @@ function handleChangePdf(event) {
                                 }catch(e){
                                   alert("something went wrong, try again")
                                 }
-                                
-                                
-                        
-                           
-                               
-                                
-            });
-    
-           
+                                                              
+            });     
                       
           }
             );    
-    if (file === "" ) {
-                    alert("No image provided, but will still update pdf");
-        return;
-                }
-    //console.log(new GeoPoint(parseInt(latitude), parseInt(longitude)))
-    //let _id = uuid().toString();
+    }
     
-                uploadTask.on(
-                    "state_changed",
-                    (snapshot) => {
-                        const percent = Math.round(
-                            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                        );
-         
-                        // update progress
-                        setPercent(percent);
-        //console.log('sadsd', percent)
-                    },
-                    (err) => console.log(err),
-                       () => {
-                           // download url
-                           getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                            const picture2 = "" + url
-                            try{
-                                const cool = onSnapshot(q, (querySnapshot) => {
-                                querySnapshot.forEach((doc) =>{
-                                  
-                                  updateDoc(doc.ref, {
-                                  picture: picture2
-                                  
-                                });
+    
+    if(file !== ""){
+        const storageRef = ref(storage, `/EducationalDocuments/${file.name}` )
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+            "state_changed",
+                  (snapshot) => {
+                      const percent = Math.round(
+                          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                      );
+       
+                      // update progress
+                      setPercent(percent);
+      //console.log('sadsd', percent)
+                  },
+                  (err) => console.log(err),
+                     () => {
+                         // download url
+                         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                          const picture2 = "" + url
+                          try{
+                              const cool = onSnapshot(q, (querySnapshot) => {
+                              querySnapshot.forEach((doc) =>{
                                 
+                                updateDoc(doc.ref, {
+                                picture: picture2
                                 
-                                })
-                                
-                                
+                              });
+                              
+                              
                               })
-                              alert("successfully updated picture");
-                            }catch(e){
-                              alert("something went wrong, try again")
-                            }
-                            
-                            
-                    
-                       
-                           
-                            
-        });
+                              
+                              
+                            })
+                            alert("successfully updated picture");
+                          }catch(e){
+                            alert("something went wrong, try again")
+                          }
+                                                    
+      });               
+    }
+      );
 
-       
-                  
-      }
-        );
+    }
+    
+        
         
     
 props.setReload(!props.reload)
-//handleClose()
-//window.reload()
+
   
   
-  
-    
   };
 
     return(
@@ -180,7 +163,7 @@ props.setReload(!props.reload)
              width: '50%',
              margin: 'auto',
              textAlign:'center',
-             //display: 'inline-block',
+            
             
              
            }}>

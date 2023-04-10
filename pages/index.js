@@ -5,7 +5,8 @@ import { About, Explore, Feedback, GetStarted, Hero, WhatsNew } from '../section
 //import Login from '../components';
 const Page = () => (
   <div className="bg-primary-black overflow-hidden">
-   <Login />
+    
+    <Login />
     {/*
     <About />
     <Hero />
